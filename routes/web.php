@@ -16,3 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('kawa');
 });
+
+Route::get('/.well-known/acme-challenge/{token}', function ($token) {
+    return $token . ".0nyemVIOXF4cpbD77MoDx8DpjP2tnKdhuBvwIarEjc8";
+});
