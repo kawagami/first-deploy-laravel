@@ -16,7 +16,6 @@ document.addEventListener('paste', function (e) {
     const fileReader = new FileReader();
     fileReader.addEventListener('load', function (e) {
         let base64 = e.target.result;
-        temp.src = base64;
     });
     fileReader.readAsDataURL(blob);
     // // 將圖片加在特定的位置下
@@ -30,5 +29,38 @@ document.addEventListener('paste', function (e) {
     // 如果覺得 base64 太長，也可以生成本地臨時連結
     let url = URL.createObjectURL(blob);
     // 上傳圖片至後台
-    // upload(blob);
+    upload(blob);
 });
+
+function upload(file) {
+    // formData
+    const formData = new FormData();
+    formData.append('image', file);
+    // // 發送
+    // const xhr = new XMLHttpRequest();
+    // xhr.open('POST', 'api/upload-image', true);
+    // xhr.addEventListener('load', function () {
+    //     if (xhr.status === 200) {
+    //         const res = xhr.responseText;
+    //         console.log(res);
+    //     }
+    // });
+    // xhr.send(formData);
+
+
+    const options = {
+        method: 'POST',
+        body: formData,
+        // If you add this, upload won't work
+        // headers: {
+        //   'Content-Type': 'multipart/form-data',
+        // }
+    };
+
+    fetch('api/upload-image', options)
+        .then(response => {
+            return response.json();
+        }).then(result => {
+            temp.src = result.image
+        });
+}
