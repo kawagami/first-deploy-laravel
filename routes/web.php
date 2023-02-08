@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Image;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('kawa');
+    $image = 'storage/' . Image::first()->path;
+    return view('kawa')->with('image', $image);
 });
 
 Route::get('/.well-known/acme-challenge/{token}', function ($token) {
