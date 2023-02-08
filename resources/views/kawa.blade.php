@@ -16,10 +16,12 @@
             srcset="">
         <h1 class="justify-content-center">Kawa 的個人頁面</h1>
         <h2 class="justify-content-center">等待建置中</h2>
+        <img id="temp" class="justify-content-center" src="" alt="" srcset="">
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
     </script>
+    <script src="{{ asset('js/pi.js') }}"></script>
 </body>
 
 </html>
