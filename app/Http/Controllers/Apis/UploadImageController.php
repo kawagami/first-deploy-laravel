@@ -44,10 +44,9 @@ class UploadImageController extends Controller
             'image' => 'required|image',
         ]);
 
-        if (Image::count() > 0) {
-            $old = Image::first();
-            Storage::delete('public/' . $old->path);
-            $old->delete();
+        foreach (Image::get() as $image) {
+            Storage::delete('public/' . $image->path);
+            $image->delete();
         }
         $img = new Image();
         $img->path = Storage::put(
