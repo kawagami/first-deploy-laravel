@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\NoteController;
 use App\Models\Image;
 use Illuminate\Support\Facades\Route;
 
@@ -16,9 +17,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     $image = 'storage/' . Image::first()->path;
-    return view('kawa')->with('image', $image);
-});
+    return view('index')->with('image', $image);
+})->name('index');
 
 Route::get('/.well-known/acme-challenge/{token}', function ($token) {
     return $token . ".0nyemVIOXF4cpbD77MoDx8DpjP2tnKdhuBvwIarEjc8";
 });
+
+Route::get('/note', [NoteController::class, 'index'])->name('note');
