@@ -1,5 +1,5 @@
 // 參考 https://juejin.cn/post/6966156683571626021
-let temp = document.querySelector("#temp");
+let irys = document.querySelector("#irys");
 
 document.addEventListener('paste', function (e) {
     const dataTransferItemList = e.clipboardData.items;
@@ -33,20 +33,8 @@ document.addEventListener('paste', function (e) {
 });
 
 function upload(file) {
-    // formData
     const formData = new FormData();
     formData.append('image', file);
-    // // 發送
-    // const xhr = new XMLHttpRequest();
-    // xhr.open('POST', 'api/upload-image', true);
-    // xhr.addEventListener('load', function () {
-    //     if (xhr.status === 200) {
-    //         const res = xhr.responseText;
-    //         console.log(res);
-    //     }
-    // });
-    // xhr.send(formData);
-
 
     const options = {
         method: 'POST',
@@ -56,11 +44,10 @@ function upload(file) {
         //   'Content-Type': 'multipart/form-data',
         // }
     };
-
     fetch('api/upload-image', options)
         .then(response => {
             return response.json();
         }).then(result => {
-            temp.src = result.image
+            irys.src = result.image
         });
 }
