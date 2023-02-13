@@ -16,7 +16,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    $image = 'storage/' . Image::first()->path;
+    if (Image::first() !== null) {
+        $image = 'storage/' . Image::first()->path;
+    } else {
+        $image = '';
+    }
     return view('index')->with('image', $image);
 })->name('index');
 
