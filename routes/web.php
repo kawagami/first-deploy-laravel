@@ -3,6 +3,7 @@
 use App\Http\Controllers\NoteController;
 use App\Models\Image;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,3 +30,7 @@ Route::get('/.well-known/acme-challenge/{token}', function ($token) {
 });
 
 Route::get('/note', [NoteController::class, 'index'])->name('note');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
