@@ -38,7 +38,8 @@ class GitHubController extends Controller
             }
         } catch (Exception $e) {
             info($e);
-            dd($e->getMessage());
+            return response('something wrong!', 400);
+            // dd($e->getMessage());
         }
     }
 }
