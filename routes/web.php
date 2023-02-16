@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\GitHubController;
+use App\Http\Controllers\GoogleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,5 +38,8 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('auth/github', [GitHubController::class, 'gitRedirect']);
-Route::get('auth/github/callback', [GitHubController::class, 'gitCallback']);
+Route::get('auth/google', [GoogleController::class, 'gitRedirect'])->name('google.login');
+Route::get('auth/google/callback', [GoogleController::class, 'gitCallback'])->name('google.callback');
+
+Route::get('auth/github', [GitHubController::class, 'gitRedirect'])->name('github.login');
+Route::get('auth/github/callback', [GitHubController::class, 'gitCallback'])->name('github.callback');
