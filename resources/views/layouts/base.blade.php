@@ -13,12 +13,11 @@
 
 <body>
     @include('components.navbar')
-
-    @isset($error)
+    @if ( session('error') )
         <div class="w-100 d-flex flex-column align-items-center justify-content-center">
-            <h1>{{ $error }}</h1>
+            <h1 class="text-danger">{{ session('error') }}</h1>
         </div>
-    @endisset
+    @endif
 
     @yield('main')
 
