@@ -76,32 +76,12 @@ class GitHubController extends Controller
                 $gitUser = User::create([
                     'name' => $user->name ?? $user->nickname ?? $user->email,
                     'email' => $user->email,
-                    'github_id' => $user->id,
-                    'auth_type' => $this->login_name,
                     'password' => encrypt($user->email)
                 ]);
                 $gitUser->user_logins()->save($new_auth);
                 Auth::login($gitUser);
             }
             return redirect('/home');
-            // ==============================
-
-            // // info(json_encode($user));
-            // $searchUser = User::where('github_id', $user->id)->first();
-            // if ($searchUser) {
-            //     Auth::login($searchUser);
-            //     return redirect('/home');
-            // } else {
-            //     $gitUser = User::create([
-            //         'name' => $user->name ?? $user->nickname ?? $user->email,
-            //         'email' => $user->email,
-            //         'github_id' => $user->id,
-            //         'auth_type' => $this->login_name,
-            //         'password' => encrypt($user->email)
-            //     ]);
-            //     Auth::login($gitUser);
-            //     return redirect('/home');
-            // }
         } catch (Exception $e) {
             info($e);
             return redirect('/')->with('error', 'something wrong!');
