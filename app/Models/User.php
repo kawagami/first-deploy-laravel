@@ -21,9 +21,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'google_id',
-        'github_id',
-        'auth_type',
     ];
 
     /**
@@ -44,4 +41,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * auth logins of user
+     */
+    public function user_logins()
+    {
+        return $this->hasMany(UserLogin::class);
+    }
 }
