@@ -27,7 +27,7 @@ class GoogleController extends Controller
             // 存在
             if ($auth_user) {
                 // 檢查是否有相同的 auth_type
-                if (collect($auth_user->user_logins())->contains('auth_type', $this->login_name)) {
+                if ($auth_user->user_logins()->get()->contains('auth_type', $this->login_name)) {
                     // 檢查該認證 ID 是否相同
                     $same_auth_type = $auth_user->user_logins()->firstWhere('auth_type', $this->login_name);
                     if ($same_auth_type->auth_id == $user->id) {
