@@ -10,7 +10,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('note') }}">My note</a>
+                    <a class="nav-link" href="{{ route('note') }}">個人筆記</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('short-url') }}">縮址功能</a>
                 </li>
                 {{-- <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"

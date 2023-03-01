@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\GitHubController;
 use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\ShortUrlController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,3 +44,10 @@ Route::get('auth/google/callback', [GoogleController::class, 'gitCallback'])->na
 
 Route::get('auth/github', [GitHubController::class, 'gitRedirect'])->name('github.login');
 Route::get('auth/github/callback', [GitHubController::class, 'gitCallback'])->name('github.callback');
+
+// 縮址
+Route::get('/short-url', [ShortUrlController::class, 'index'])->name('short-url');
+// 新增新址
+Route::post('/short-url', [ShortUrlController::class, 'store'])->name('short-url.store');
+// 跳轉到縮址紀錄的位置
+Route::get('/short-url/{short_url}', [ShortUrlController::class, 'teleport'])->name('short-url.teleport');
