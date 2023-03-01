@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('short_urls', function (Blueprint $table) {
             $table->id();
-            $table->string("destination")->index();
+            $table->longText("destination")->index();
             $table->string("short_url");
             $table->string("remark")->nullable();
             $table->timestamps();
