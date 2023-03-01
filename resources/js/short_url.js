@@ -26,7 +26,26 @@ destination_button.addEventListener('click', e => {
             return response.json();
         }).then(result => {
             // 顯示短網址在頁面上
-            short.value = result.short_url
-            destination_button.disabled = false
+            short.value = result.short_url;
+            destination_button.disabled = false;
+            short_url_success();
+        }).catch(err => {
+            destination_button.disabled = false;
+            short_url_fail();
         });
 });
+
+function short_url_success() {
+    Swal.fire(
+        "縮網址成功",
+        '',
+        'success'
+    )
+};
+function short_url_fail() {
+    Swal.fire(
+        "不符合網址",
+        '',
+        'error'
+    )
+};
