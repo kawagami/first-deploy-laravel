@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('short_urls', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->longText("destination")->index();
             $table->string("short_url");
             $table->string("remark")->nullable();
