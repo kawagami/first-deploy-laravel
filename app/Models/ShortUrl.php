@@ -15,6 +15,7 @@ class ShortUrl extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'user_id',
         'destination',
         'short_url',
         'remark',
