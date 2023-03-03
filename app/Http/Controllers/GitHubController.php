@@ -81,10 +81,10 @@ class GitHubController extends Controller
                 $gitUser->user_logins()->save($new_auth);
                 Auth::login($gitUser);
             }
-            return redirect('/home');
+            return redirect(route('index'));
         } catch (Exception $e) {
             info($e);
-            return redirect('/')->with('error', 'something wrong!');
+            return redirect(route('index'))->with('error', 'something wrong!');
             // return response('something wrong!', 400);
             // dd($e->getMessage());
         }
