@@ -18,6 +18,7 @@ class ShortUrlSeeder extends Seeder
         ShortUrl::create([
             "destination" => "https://translate.google.com.tw/?sl=en&tl=zh-TW&op=translate",
             "short_url"   => "fortest",
+            "user_id"     => 1,
         ]);
     }
 }
