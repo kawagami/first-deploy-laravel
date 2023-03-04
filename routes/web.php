@@ -8,6 +8,7 @@ use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\GitHubController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\ShortUrlController;
+use Illuminate\Support\Facades\App;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,3 +54,11 @@ Route::middleware(['auth'])->group(function () {
 });
 // 跳轉到縮址紀錄的位置
 Route::get('/short-url/{short_url}', [ShortUrlController::class, 'teleport'])->name('short-url.teleport');
+
+Route::post('/lang/{lang}', function ($lang) {
+    if ($lang != 'zh-TW') {
+        $lang = 'en';
+    }
+    session()->put('locale', $lang);
+    return back();
+})->name('lang');

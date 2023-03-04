@@ -10,10 +10,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('note') }}">個人筆記</a>
+                    <a class="nav-link" href="{{ route('note') }}">@lang('navbar.my-note')</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('short-url') }}">縮址功能</a>
+                    <a class="nav-link" href="{{ route('short-url') }}">@lang('navbar.short-url')</a>
                 </li>
                 {{-- <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -33,11 +33,33 @@
 
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ms-auto">
+                {{-- language --}}
+                @if (app()->getLocale() == 'zh-TW')
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('lang', 'en') }}"
+                            onclick="event.preventDefault(); document.getElementById('lang-en').submit();">
+                            @lang('navbar.en')
+                        </a>
+                        <form id="lang-en" action="{{ route('lang', 'en') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                    </li>
+                @else
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('lang', 'zh-TW') }}"
+                        onclick="event.preventDefault(); document.getElementById('lang-zh-TW').submit();">
+                        @lang('navbar.zh-TW')
+                    </a>
+                    <form id="lang-zh-TW" action="{{ route('lang', 'zh-TW') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
+                </li>
+                @endif
                 <!-- Authentication Links -->
                 @guest
                     @if (Route::has('login'))
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            <a class="nav-link" href="{{ route('login') }}">@lang('navbar.login')</a>
                         </li>
                     @endif
                 @else
@@ -50,7 +72,7 @@
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
                                                     document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
+                                @lang('navbar.logout')
                             </a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
