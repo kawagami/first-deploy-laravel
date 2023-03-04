@@ -33,28 +33,29 @@
 
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ms-auto">
+
                 {{-- language --}}
-                @if (app()->getLocale() == 'zh-TW')
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('lang', 'en') }}"
-                            onclick="event.preventDefault(); document.getElementById('lang-en').submit();">
-                            @lang('navbar.en')
-                        </a>
-                        <form id="lang-en" action="{{ route('lang', 'en') }}" method="POST" class="d-none">
-                            @csrf
-                        </form>
-                    </li>
-                @else
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('lang', 'zh-TW') }}"
-                        onclick="event.preventDefault(); document.getElementById('lang-zh-TW').submit();">
-                        @lang('navbar.zh-TW')
+                <li class="nav-item dropdown">
+                    <a id="lang-select" class="nav-link dropdown-toggle" href="#" role="button"
+                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        @lang('navbar.' . app()->getLocale())
                     </a>
-                    <form id="lang-zh-TW" action="{{ route('lang', 'zh-TW') }}" method="POST" class="d-none">
-                        @csrf
-                    </form>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="lang-select">
+                        @foreach (config('app.locales') as $locale)
+                            @if ($locale != app()->getLocale())
+                                <a class="dropdown-item" href="#"
+                                    onclick="event.preventDefault();document.getElementById('lang-{{ $locale }}').submit();">
+                                    @lang('navbar.' . $locale)
+                                </a>
+                                <form id="lang-{{ $locale }}" action="{{ route('lang', $locale) }}" method="POST"
+                                    class="d-none">
+                                    @csrf
+                                </form>
+                            @endif
+                        @endforeach
+                    </div>
                 </li>
-                @endif
+
                 <!-- Authentication Links -->
                 @guest
                     @if (Route::has('login'))

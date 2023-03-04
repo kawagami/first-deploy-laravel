@@ -7,4 +7,5 @@ return [
     'logout'    => '登出',
     'en'        => 'English',
     'zh-TW'     => '中文',
+    'ja'        => '日本語',
 ];
