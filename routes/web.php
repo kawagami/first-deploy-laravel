@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\NoteController;
 use App\Models\Image;
 use Illuminate\Support\Facades\Route;
@@ -64,8 +65,9 @@ Route::post('/lang/{lang}', function ($lang) {
     return back();
 })->name('lang');
 
-Route::group(['middleware' => ['auth', 'role:admin']], function () {
-    Route::get('/admin', function () {
-        return "I am admin";
-    })->name('admin.index');
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('admin.index');
+    Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
+    Route::get('/images', [AdminController::class, 'images'])->name('admin.images');
+    Route::get('/short_urls', [AdminController::class, 'short_urls'])->name('admin.short_urls');
 });

@@ -19,11 +19,11 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        $admin = Role::create(['name' => 'admin', 'guard_name' => 'web']);
-        if ($first = User::find(1)) {
-            $first->assignRole($admin);
+        if (!Role::where('name', 'admin')->exists()) {
+            Role::create(['name' => 'admin', 'guard_name' => 'web']);
         }
         if ($second = User::find(2)) {
+            $admin = Role::where('name', 'admin')->first();
             $second->assignRole($admin);
         }
     }

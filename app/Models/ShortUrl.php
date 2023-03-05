@@ -20,4 +20,12 @@ class ShortUrl extends Model
         'short_url',
         'remark',
     ];
+
+    /**
+     * onwer
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

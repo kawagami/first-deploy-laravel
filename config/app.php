@@ -218,4 +218,10 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
+    'admins' => [
+        'users',
+        'short_urls',
+        'images',
+    ],
+
 ];

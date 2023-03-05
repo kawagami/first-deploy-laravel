@@ -18,8 +18,22 @@
 
                 {{-- only admin --}}
                 @role('admin')
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('admin.index') }}">@lang('navbar.admin-panel')</a>
+                    <li class="nav-item dropdown">
+                        <a id="admin-select" class="nav-link dropdown-toggle" href="#" role="button"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            @lang('navbar.admin-panel')
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="admin-select">
+                            <a class="dropdown-item" href="{{ route('admin.index') }}">
+                                @lang('navbar.admin-panel')
+                            </a>
+                            @foreach (config('app.admins') as $page)
+                                <a class="dropdown-item" href="{{ route('admin.' . $page) }}">
+                                    {{-- @lang('navbar.' . $locale) --}}
+                                    {{ $page }}
+                                </a>
+                            @endforeach
+                        </div>
                     </li>
                 @endrole
 
