@@ -39,8 +39,6 @@ Route::get('/note', [NoteController::class, 'index'])->name('note');
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
 Route::get('auth/google', [GoogleController::class, 'gitRedirect'])->name('google.login');
 Route::get('auth/google/callback', [GoogleController::class, 'gitCallback'])->name('google.callback');
 
