@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             NoteSeeder::class,
             ShortUrlSeeder::class,
+            RoleSeeder::class,
         ]);
     }
 }

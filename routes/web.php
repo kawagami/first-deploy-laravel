@@ -63,3 +63,9 @@ Route::post('/lang/{lang}', function ($lang) {
     session()->put('locale', $lang);
     return back();
 })->name('lang');
+
+Route::group(['middleware' => ['auth', 'role:admin']], function () {
+    Route::get('/admin', function () {
+        return "I am admin";
+    })->name('admin.index');
+});
