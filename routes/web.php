@@ -1,13 +1,13 @@
 <?php
 
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\NoteController;
 use App\Models\Image;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
-use App\Http\Controllers\GitHubController;
-use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\Socialite\GitHubController;
+use App\Http\Controllers\Socialite\GoogleController;
 use App\Http\Controllers\ShortUrlController;
 use Illuminate\Support\Facades\App;
 
