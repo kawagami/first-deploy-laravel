@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\NoteController;
 use App\Models\Image;
 use Illuminate\Support\Facades\Route;
@@ -37,7 +38,7 @@ Route::get('/.well-known/acme-challenge/{token}', function ($token) {
 
 Route::get('/note', [NoteController::class, 'index'])->name('note');
 
-Auth::routes();
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 
 Route::get('auth/google', [GoogleController::class, 'gitRedirect'])->name('google.login');
 Route::get('auth/google/callback', [GoogleController::class, 'gitCallback'])->name('google.callback');

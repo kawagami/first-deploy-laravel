@@ -9,5 +9,9 @@ return [
         "input-placeholder"  => "Paste the long URL that needs to be shortened here.",
         "generate-short-url" => "Generate a shortened URL.",
         "output-placeholder" => "The shortened URL will appear here.",
-    ]
+    ],
+    "login" => [
+        "title"      => "Log in",
+        "login-with" => "Sign in with :login",
+    ],
 ];
