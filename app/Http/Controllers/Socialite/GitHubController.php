@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Socialite;
 
-class GitHubController extends SocialiteBaseController
+class GitHubController extends BaseController
 {
     protected $login_name = 'github';
 }
