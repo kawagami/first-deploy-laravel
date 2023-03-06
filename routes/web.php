@@ -39,7 +39,7 @@ Route::get('/.well-known/acme-challenge/{token}', function ($token) {
 Route::get('/note', [NoteController::class, 'index'])->name('note');
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('auth/google', [GoogleController::class, 'gitRedirect'])->name('google.login');
 Route::get('auth/google/callback', [GoogleController::class, 'gitCallback'])->name('google.callback');
