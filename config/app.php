@@ -88,6 +88,7 @@ return [
         'zh-TW',
         'en',
         'ja',
+        'es',
     ],
 
     /*
