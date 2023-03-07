@@ -4,5 +4,5 @@ namespace App\Http\Controllers\Socialite;
 
 class GitHubController extends BaseController
 {
-    public $auth_name = 'github';
+    protected $auth_name = 'github';
 }
