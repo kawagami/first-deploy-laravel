@@ -41,11 +41,11 @@ Route::get('/note', [NoteController::class, 'index'])->name('note');
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::get('auth/google', [GoogleController::class, 'gitRedirect'])->name('google.login');
-Route::get('auth/google/callback', [GoogleController::class, 'gitCallback'])->name('google.callback');
+Route::get('auth/google', [GoogleController::class, 'redirect'])->name('google.login');
+Route::get('auth/google/callback', [GoogleController::class, 'callback'])->name('google.callback');
 
-Route::get('auth/github', [GitHubController::class, 'gitRedirect'])->name('github.login');
-Route::get('auth/github/callback', [GitHubController::class, 'gitCallback'])->name('github.callback');
+Route::get('auth/github', [GitHubController::class, 'redirect'])->name('github.login');
+Route::get('auth/github/callback', [GitHubController::class, 'callback'])->name('github.callback');
 
 Route::middleware(['auth'])->group(function () {
     // 縮址

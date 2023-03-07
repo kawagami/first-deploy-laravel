@@ -21,15 +21,15 @@ class BaseController extends Controller
         $this->service->set_auth_name($this->auth_name);
     }
 
-    public function gitRedirect()
+    public function redirect()
     {
-        return $this->service->gitRedirect();
+        return $this->service->redirect();
     }
 
-    public function gitCallback()
+    public function callback()
     {
         try {
-            return $this->service->gitCallback();
+            return $this->service->callback();
         } catch (\Exception $e) {
             info($e);
             return redirect(route('index'))->with('error', 'something wrong!');

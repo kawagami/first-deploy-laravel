@@ -22,12 +22,12 @@ class BaseService
         $this->auth_name = $auth_name;
     }
 
-    public function gitRedirect()
+    public function redirect()
     {
         return Socialite::driver($this->auth_name)->redirect();
     }
 
-    public function gitCallback()
+    public function callback()
     {
         $user = Socialite::driver($this->auth_name)->user();
         // 檢查 email 是否存在
