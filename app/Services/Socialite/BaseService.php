@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 class BaseService
 {
-    public $login_name = 'here_is_third_name';
+    public $auth_name;
     public $repository;
 
     public function __construct(Repository $repository)
@@ -17,19 +17,24 @@ class BaseService
         $this->repository = $repository;
     }
 
+    public function set_auth_name(string $auth_name):void
+    {
+        $this->auth_name = $auth_name;
+    }
+
     public function gitRedirect()
     {
-        return Socialite::driver($this->login_name)->redirect();
+        return Socialite::driver($this->auth_name)->redirect();
     }
 
     public function gitCallback()
     {
-        $user = Socialite::driver($this->login_name)->user();
+        $user = Socialite::driver($this->auth_name)->user();
         // 檢查 email 是否存在
         // 存在
         if ($auth_user = $this->repository->user_email_is_exists($user->email)) {
             // 檢查是否有相同的 auth_type
-            if ($same_auth_type = $this->repository->user_has_same_auth_type($auth_user, $this->login_name)) {
+            if ($same_auth_type = $this->repository->user_has_same_auth_type($auth_user, $this->auth_name)) {
                 // 檢查該認證 ID 是否相同
                 if ($same_auth_type->auth_id == $user->id) {
                     // 是
@@ -45,9 +50,9 @@ class BaseService
             } else {
                 // 沒有
                 $data = [
-                    // 'user_id'   => $user_id,
+                    'user_id'   => $auth_user->id,
                     'auth_id'   => $user->id,
-                    'auth_type' => $this->login_name,
+                    'auth_type' => $this->auth_name,
                     'name'      => $user->name ?? $user->nickname ?? $user->email,
                     'nickname'  => $user->nickname,
                     'avatar'    => $user->avatar,
@@ -64,22 +69,22 @@ class BaseService
             // 新增 user
             // 子表新增 auth_type & 該認證 ID
             // 登入
-            $auth_data = [
-                // 'user_id'   => $user_id,
-                'auth_id'   => $user->id,
-                'auth_type' => $this->login_name,
-                'name'      => $user->name ?? $user->nickname ?? $user->email,
-                'nickname'  => $user->nickname,
-                'avatar'    => $user->avatar,
-                'token'     => $user->token,
-            ];
-            $new_auth = $this->repository->create_auth($auth_data);
             $user_data = [
                 'name'     => $user->name ?? $user->nickname ?? $user->email,
                 'email'    => $user->email,
                 'password' => encrypt(Str::random(10))
             ];
             $new_user = $this->repository->create_user($user_data);
+            $auth_data = [
+                'user_id'   => $new_user->id,
+                'auth_id'   => $user->id,
+                'auth_type' => $this->auth_name,
+                'name'      => $user->name ?? $user->nickname ?? $user->email,
+                'nickname'  => $user->nickname,
+                'avatar'    => $user->avatar,
+                'token'     => $user->token,
+            ];
+            $new_auth = $this->repository->create_auth($auth_data);
             $this->repository->user_add_auth($new_user, $new_auth);
             Auth::login($new_user);
         }
