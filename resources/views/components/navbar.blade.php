@@ -46,16 +46,16 @@
                 <li class="nav-item dropdown">
                     <a id="lang-select" class="nav-link dropdown-toggle" href="#" role="button"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                        @lang('navbar.' . app()->getLocale())
+                        @lang('langs.' . app()->getLocale())
                     </a>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="lang-select">
-                        @foreach (config('app.locales') as $locale)
-                            @if ($locale != app()->getLocale())
+                        @foreach (__('langs') as $key => $locale)
+                            @if ($key != app()->getLocale())
                                 <a class="dropdown-item" href="#"
-                                    onclick="event.preventDefault();document.getElementById('lang-{{ $locale }}').submit();">
-                                    @lang('navbar.' . $locale)
+                                    onclick="event.preventDefault();document.getElementById('lang-{{ $key }}').submit();">
+                                    @lang('langs.' . $key)
                                 </a>
-                                <form id="lang-{{ $locale }}" action="{{ route('lang', $locale) }}" method="POST"
+                                <form id="lang-{{ $key }}" action="{{ route('lang', $key) }}" method="POST"
                                     class="d-none">
                                     @csrf
                                 </form>

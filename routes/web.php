@@ -57,7 +57,7 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/short-url/{short_url}', [ShortUrlController::class, 'teleport'])->name('short-url.teleport');
 
 Route::post('/lang/{lang}', function ($lang) {
-    $langs = collect(config('app.locales'));
+    $langs = collect(trans('langs'))->keys();
     if (!$langs->contains($lang)) {
         $lang = 'en';
     }

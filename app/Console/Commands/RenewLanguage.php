@@ -57,6 +57,21 @@ class RenewLanguage extends Command
 
         // 對每個檔案做處理
         foreach ($this->get_files($files_path) as $key => $path) {
+            // input 的第一個參數當作語言參數產生的新 lang 路徑 & 檔案
+            $new_file_path = join(DIRECTORY_SEPARATOR, [lang_path($parameter), basename($path)]);
+            $this->line("建立 {$new_file_path}");
+            // 該路徑不存在的話就建立
+            $dirname = dirname($new_file_path);
+            if (!is_dir($dirname)) {
+                mkdir($dirname, 0755, true);
+            }
+
+            if (basename($path) === "langs.php") {
+                // 不翻譯 直接複製一份
+                copy($path, $new_file_path);
+                continue;
+            }
+
             // 預設語言檔案內文
             $origin_file_string = file_get_contents($path);
 
@@ -121,14 +136,6 @@ class RenewLanguage extends Command
                 $origin_file_string
             );
 
-            // input 的第一個參數當作語言參數產生的新 lang 路徑 & 檔案
-            $new_file_path = join(DIRECTORY_SEPARATOR, [lang_path($parameter), basename($path)]);
-            $this->line("建立 {$new_file_path}");
-            // 該路徑不存在的話就建立
-            $dirname = dirname($new_file_path);
-            if (!is_dir($dirname)) {
-                mkdir($dirname, 0755, true);
-            }
             // 建立新的檔案，有舊檔案的話會覆蓋
             $new_file_open = fopen($new_file_path, 'w');
             // 寫入資料，使用 dot 處理資料的話要記得加上 $head
