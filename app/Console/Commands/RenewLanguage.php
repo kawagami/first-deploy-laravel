@@ -3,20 +3,16 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Stichoza\GoogleTranslate\GoogleTranslate;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 
 class RenewLanguage extends Command
 {
-    protected $console;
 
     public function __construct()
     {
         parent::__construct();
-
-        $this->console = new ConsoleOutput();
     }
     /**
      * The name and signature of the console command.
@@ -39,52 +35,95 @@ class RenewLanguage extends Command
      */
     public function handle()
     {
-        $head = '<?php' . PHP_EOL . PHP_EOL;
-        $support_langs = collect(config('app.locales'));
+        // 計時執行時間
+        $start_time = microtime(true);
+
+        // 取參數
         $parameter = $this->argument('lang');
+
+        // // 取得開放的語系
+        // $support_langs = collect(config('app.locales'));
+
+        // // 不在開放的清單中就 return
         // if (!$support_langs->contains($parameter)) {
-        //     return $this->console->writeln("language not supported");
+        //     return $this->line("language not supported");
         // }
+
         // 取得預設的語言檔
         $default_lang = config('app.locale');
+
+        // 組合檔案路徑
         $files_path = lang_path($default_lang);
+
+        // 對每個檔案做處理
         foreach ($this->get_files($files_path) as $key => $path) {
             // 預設語言檔案內文
             $origin_file_string = file_get_contents($path);
 
+            // 檢查規則
             $pattern = '/["|\'](.*)["|\']\s+=>\s+["|\'](.*)["|\']/';
 
-            // // 使用 preg_match_all 函式進行搜尋
-            // preg_match_all($pattern, $origin_file_string, $matches, PREG_SET_ORDER);
-            // // dump(Arr::dot($matches));
-            // $need_trans_data = collect(data_get($matches, '*.2'));
-            // $hash_map_data = $need_trans_data->mapWithKeys(function ($item, $key) {
-            //     return [$item => $item];
-            // })->toArray();
+            // 使用 preg_match_all 函式進行搜尋
+            preg_match_all($pattern, $origin_file_string, $matches, PREG_SET_ORDER);
+
+            // 取要翻譯的 string collection
+            $need_trans_data = collect(data_get($matches, '*.2'));
+
+            // 塞資料用的對照 array
+            $hash_map_data = $need_trans_data->mapWithKeys(function ($item, $key) {
+                return [$item => $item];
+            })->toArray();
+
+            // 組合要餵給翻譯的 string
+            $for_trans_string = Arr::join($hash_map_data, "\n");
+
+            // 取得 bytes 數
+            $bytes = strlen($for_trans_string);
+            // 取得 characters 數
+            $characters = mb_strlen($for_trans_string, 'UTF-8');
+            // 組合要顯示的資訊
+            $format      = "這次翻譯了\n%d 個 byte\n%d 個 char";
+            $string_info = sprintf($format, $bytes, $characters);
+            $this->info($string_info);
+
+            $response_string = GoogleTranslate::trans($for_trans_string, $parameter, $default_lang);
+            $this->line("request 了一次 API 休息一秒");
+            sleep(1);
+
+            // 整理 response
+            $explode_array = explode("\n", $response_string);
+            // 對比翻譯資料
+            if (count($hash_map_data) !== count($explode_array)) {
+                return $this->error("翻譯過程有誤");
+            }
+
+            // 資料回填
+            $index = 0;
+            foreach ($hash_map_data as $key => $value) {
+                $hash_map_data[$key] = $explode_array[$index];
+                $index++;
+            }
             // dump($hash_map_data);
 
-            // =============================================================
-            // https://kawa.homes/short-url/P86sZH13Gf
-            // 預計在這將翻譯的內容塞回去
-            $result = preg_replace_callback(
+            $translated_string = preg_replace_callback(
                 $pattern,
-                function ($match) use($parameter, $default_lang) {
-                    // 在這裡做 API 翻譯 $match[2]
-                    $this->console->writeln("翻譯 {$match[2]}");
-                    $after = GoogleTranslate::trans($match[2], $parameter, $default_lang);
-                    $this->console->writeln("取得 {$after} 休息一秒");
-                    sleep(1);
-                    //
-                    return "\"{$match[1]}\" => \"{$after}\"";
+                function ($match) use ($hash_map_data) {
+                    // 回填的資料中有對應的資料的話更新資料
+                    if (isset($hash_map_data[$match[2]])) {
+                        $old = $match[2];
+                        $match[2] = $hash_map_data[$match[2]];
+                        $new = $match[2];
+                        $match[2] = $this->handle_lang_variables($old, $new);
+                    }
+
+                    return "\"{$match[1]}\" => \"{$match[2]}\"";
                 },
                 $origin_file_string
             );
-            // 這圈 foreach 中的 result 就是翻譯過要寫回去的內容
-            // dump($result);
 
             // input 的第一個參數當作語言參數產生的新 lang 路徑 & 檔案
             $new_file_path = join(DIRECTORY_SEPARATOR, [lang_path($parameter), basename($path)]);
-            $this->console->writeln("建立 {$new_file_path}");
+            $this->line("建立 {$new_file_path}");
             // 該路徑不存在的話就建立
             $dirname = dirname($new_file_path);
             if (!is_dir($dirname)) {
@@ -93,31 +132,12 @@ class RenewLanguage extends Command
             // 建立新的檔案，有舊檔案的話會覆蓋
             $new_file_open = fopen($new_file_path, 'w');
             // 寫入資料，使用 dot 處理資料的話要記得加上 $head
-            fwrite($new_file_open, $result);
+            fwrite($new_file_open, $translated_string);
             fclose($new_file_open);
-            // =============================================================
-
-            // // dump($matches);
-            // // 迴圈輸出符合條件的結果
-            // foreach ($matches as $match) {
-            //     // echo "key: " . $match[1] . ", value: " . $match[2] . "\n";
-            //     dump($match);
-            // }
-
-            // dump($new_file_path);
-            // $data = Arr::dot(require $path);
-            // // dump($data);
-            // dump(collect($data)->values());
-            // $undot_data = Arr::undot($data);
-            // dump($undot_data);
-            // $new_string = str_replace(array(" "), "", $file_string);
-            // $this->console->writeln($new_string);
-            // $this->console->writeln("===============");
         }
-        // parse 需要翻譯的字
-        // 對接 API 翻譯文字
-        // 產生 or 取代 input 所指的語言
-        // return $this->console->writeln($files_path);
+        $total_time = microtime(true) - $start_time;
+        $total_time = round($total_time, 4);
+        $this->info("本次翻譯花費秒數 {$total_time}");
     }
 
     public function get_files($path)
@@ -137,5 +157,39 @@ class RenewLanguage extends Command
             closedir($handle);
         }
         return $files;
+    }
+
+    public function handle_lang_variables(string $old, string $new): string
+    {
+        $old_pattern = '/:[a-zA-Z]+/';
+        $new_pattern = '/:[a-zA-Z]+|[a-zA-Z]+:/';
+        preg_match_all($old_pattern, $old, $old_matches);
+
+        if (count($old_matches[0]) === 0) {
+            return $new;
+        }
+
+        preg_match_all($new_pattern, $new, $new_matches);
+
+        if (count($old_matches[0]) !== count($new_matches[0])) {
+            $this->error("翻譯前後 string preg 出錯");
+            throw new \Exception("翻譯前後 string preg 出錯");
+        }
+
+        $map = [];
+        for ($i = 0; $i < count($new_matches[0]); $i++) {
+            $map[$new_matches[0][$i]] = $old_matches[0][$i];
+        }
+
+        return preg_replace_callback(
+            $new_pattern,
+            function ($match) use ($map) {
+                if (isset($map[$match[0]])) {
+                    $match[0] = $map[$match[0]];
+                }
+                return $match[0];
+            },
+            $new
+        );
     }
 }
