@@ -41,6 +41,11 @@ class RenewLanguage extends Command
         // 取參數
         $parameter = $this->argument('lang');
 
+        $google_enable_translate_langs = collect(config('app.google_enable_translate_langs'));
+        if (!$google_enable_translate_langs->contains($parameter)) {
+            return $this->error("不支援的語系");
+        }
+
         // // 取得開放的語系
         // $support_langs = collect(config('app.locales'));
 
@@ -55,6 +60,9 @@ class RenewLanguage extends Command
         // 組合檔案路徑
         $files_path = lang_path($default_lang);
 
+        // 設定存放所有語系的檔案名稱
+        $enable_langs_file_name = "langs.php";
+
         // 對每個檔案做處理
         foreach ($this->get_files($files_path) as $key => $path) {
             // input 的第一個參數當作語言參數產生的新 lang 路徑 & 檔案
@@ -66,9 +74,22 @@ class RenewLanguage extends Command
                 mkdir($dirname, 0755, true);
             }
 
-            if (basename($path) === "langs.php") {
-                // 不翻譯 直接複製一份
-                copy($path, $new_file_path);
+            if (basename($path) === $enable_langs_file_name) {
+                // 同步更新 可用語言檔
+                foreach (scandir(lang_path()) as $key => $lang_dir_name) {
+                    if (
+                        $lang_dir_name !== "." &&
+                        $lang_dir_name !== ".." &&
+                        $lang_dir_name !== $default_lang
+                    ) {
+                        $specific_lang_file_path = join(DIRECTORY_SEPARATOR, [lang_path($lang_dir_name), $enable_langs_file_name]);
+                        if (file_exists($specific_lang_file_path)) {
+                            unlink($specific_lang_file_path);
+                        }
+                        // 不翻譯 直接複製一份
+                        copy($path, $specific_lang_file_path);
+                    }
+                }
                 continue;
             }
 
@@ -147,22 +168,45 @@ class RenewLanguage extends Command
         $this->info("本次翻譯花費秒數 {$total_time}");
     }
 
+    /**
+     * 遞迴取更深層的檔案
+     */
+    // public function get_files($path)
+    // {
+    //     $files = array();
+    //     if ($handle = opendir($path)) {
+    //         while (false !== ($entry = readdir($handle))) {
+    //             if ($entry != "." && $entry != "..") {
+    //                 $fullPath = $path . DIRECTORY_SEPARATOR . $entry;
+    //                 if (is_dir($fullPath)) {
+    //                     $files = array_merge($files, $this->get_files($fullPath));
+    //                 } else {
+    //                     $files[] = $fullPath;
+    //                 }
+    //             }
+    //         }
+    //         closedir($handle);
+    //     }
+    //     return $files;
+    // }
+
+    /**
+     * 不遞迴取更深層的檔案
+     */
     public function get_files($path)
     {
-        $files = array();
-        if ($handle = opendir($path)) {
-            while (false !== ($entry = readdir($handle))) {
-                if ($entry != "." && $entry != "..") {
-                    $fullPath = $path . DIRECTORY_SEPARATOR . $entry;
-                    if (is_dir($fullPath)) {
-                        $files = array_merge($files, $this->get_files($fullPath));
-                    } else {
-                        $files[] = $fullPath;
-                    }
-                }
+        $files = [];
+        $default_lang_files = scandir($path);
+        $default_lang = config('app.locale');
+        foreach ($default_lang_files as $key => $file_name) {
+            if (
+                $file_name !== "." &&
+                $file_name !== ".."
+            ) {
+                $files[] = join(DIRECTORY_SEPARATOR, [lang_path($default_lang), $file_name]);
             }
-            closedir($handle);
         }
+
         return $files;
     }
 

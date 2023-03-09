@@ -10,6 +10,7 @@ use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\Socialite\GitHubController;
 use App\Http\Controllers\Socialite\GoogleController;
 use App\Http\Controllers\ShortUrlController;
+use App\Http\Controllers\LanguageController;
 use Illuminate\Support\Facades\App;
 
 /*
@@ -56,14 +57,7 @@ Route::middleware(['auth'])->group(function () {
 // 跳轉到縮址紀錄的位置
 Route::get('/short-url/{short_url}', [ShortUrlController::class, 'teleport'])->name('short-url.teleport');
 
-Route::post('/lang/{lang}', function ($lang) {
-    $langs = collect(trans('langs'))->keys();
-    if (!$langs->contains($lang)) {
-        $lang = 'en';
-    }
-    session()->put('locale', $lang);
-    return back();
-})->name('lang');
+Route::post('/lang/{lang}', [LanguageController::class, 'lang'])->name('lang');
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
