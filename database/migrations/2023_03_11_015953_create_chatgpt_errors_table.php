@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('sent_message');
             // error
-            $table->string('message');
+            $table->longText('message');
             $table->string('type');
             $table->string('param');
             $table->string('code');
