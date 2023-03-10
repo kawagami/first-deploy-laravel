@@ -3,6 +3,7 @@
 use App\Http\Controllers\Apis\UploadImageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Apis\LineBotController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +21,6 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::post('/upload-image', [UploadImageController::class, 'store']);
+
+// LINE
+Route::post('/line-bot', [LineBotController::class, 'handleRequest']);
