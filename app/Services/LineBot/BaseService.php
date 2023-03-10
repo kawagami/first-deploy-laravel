@@ -2,6 +2,7 @@
 
 namespace App\Services\LineBot;
 
+use App\Http\Controllers\ChatgptController;
 use App\Repositories\LineBot\BaseRepository as Repository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -39,6 +40,7 @@ class BaseService
                     // 非驚嘆號開頭 不處理
                     continue;
                 }
+                $main_text = Str::substr($text, 1);
 
                 $message_data = [
                     'type'            => $event->getType(),
@@ -50,10 +52,11 @@ class BaseService
                 ];
                 $this->repository->record($message_data);
 
+                // 對 chatgpt 發問
+                $chatgpt_response_message = ChatgptController::request($main_text);
+
                 $replyToken = $event->getReplyToken();
-                // $response = $bot->replyText($replyToken, new TextMessageBuilder('你說了：' . $text));
-                $response = $bot->replyText($replyToken, $text);
-                // info($response);
+                $response   = $bot->replyText($replyToken, $chatgpt_response_message);
                 if ($response->isSucceeded()) {
                     return true;
                 } else {
