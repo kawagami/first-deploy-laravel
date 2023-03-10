@@ -25,7 +25,7 @@ return new class extends Migration
             $table->unsignedSmallInteger('usage_completion_tokens');
             $table->unsignedSmallInteger('usage_total_tokens');
             $table->string('choices_message_role');
-            $table->string('choices_message_content')->comment('received messages');
+            $table->longText('choices_message_content')->comment('received messages');
             $table->string('choices_finish_reason');
             $table->string('choices_index');
             //
