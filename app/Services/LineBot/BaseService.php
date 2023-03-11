@@ -35,9 +35,13 @@ class BaseService
             // 目前只處理文字訊息
             if ($event instanceof LINEBot\Event\MessageEvent\TextMessage) {
 
-                $text = $event->getText();
-                if (strlen($text) > 0 && $text[0] !== "!") {
-                    // 非驚嘆號開頭 不處理
+                $text = trim($event->getText());
+                // 沒 input 有效文字
+                if ( strlen($text) === 0 ) {
+                    continue;
+                }
+                // 非驚嘆號開頭 不處理
+                if ( !Str::startsWith($text, "!") && !Str::startsWith($text, "！") ) {
                     continue;
                 }
                 $main_text = Str::substr($text, 1);
