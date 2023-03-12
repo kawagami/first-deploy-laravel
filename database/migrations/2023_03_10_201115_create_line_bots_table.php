@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('reply_token');
             $table->string('user_id');
             $table->string('event_source_id');
-            $table->string('text');
+            $table->longText('text');
             $table->timestamps();
         });
     }
