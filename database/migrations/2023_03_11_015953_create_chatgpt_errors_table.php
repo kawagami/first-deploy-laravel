@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('chatgpt_errors', function (Blueprint $table) {
             $table->id();
-            $table->string('sent_message');
+            $table->longText('sent_message');
             // error
             $table->longText('message');
             $table->string('type');
