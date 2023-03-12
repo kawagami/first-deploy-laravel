@@ -50,7 +50,7 @@ class ChatgptController extends Controller
                 "usage_total_tokens"      => data_get($response, "usage.total_tokens"),
                 "choices_message_role"    => data_get($response, "choices.0.message.role"),
                 "choices_message_content" => data_get($response, "choices.0.message.content"),
-                "choices_finish_reason"   => data_get($response, "choices.0.finish_reason"),
+                "choices_finish_reason"   => data_get($response, "choices.0.finish_reason", "stop_error"),
                 "choices_index"           => data_get($response, "choices.0.index"),
             ];
             Chatgpt::create($success_data);
