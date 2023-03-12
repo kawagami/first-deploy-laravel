@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('chatgpts', function (Blueprint $table) {
             $table->id();
-            $table->longText('sent_message');
+            $table->string('sent_message');
             // success
             $table->string('data_id')->comment('回應傳來的 id 值');
             $table->string('object');
