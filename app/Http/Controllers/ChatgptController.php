@@ -10,12 +10,10 @@ class ChatgptController extends Controller
 {
     public static function request(string $request_message)
     {
-        $response = Http::withHeaders(
-            [
-                'Content-Type'  => 'application/json',
-                'Authorization' => 'Bearer ' . env('CHATGPT_API_KEY'),
-            ]
-        )->post(
+        $response = Http::withHeaders([
+            'Content-Type'  => 'application/json',
+            'Authorization' => 'Bearer ' . env('CHATGPT_API_KEY'),
+        ])->timeout(180)->post(
             'https://api.openai.com/v1/chat/completions',
             [
                 'model'       => 'gpt-3.5-turbo',
