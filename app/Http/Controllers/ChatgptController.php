@@ -48,6 +48,8 @@ class ChatgptController extends Controller
             }
         } catch (\Exception $error) {
             info($error->getMessage());
+
+            return $error->getMessage();
         }
 
         return "error";
