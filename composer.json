@@ -13,6 +13,7 @@
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.2",
         "linecorp/line-bot-sdk": "^3.6",
+        "openai-php/laravel": "^0.3.4",
         "spatie/laravel-permission": "^5.9",
         "stichoza/google-translate-php": "^5.1"
     },
