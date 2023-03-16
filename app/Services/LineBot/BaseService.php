@@ -4,7 +4,6 @@ namespace App\Services\LineBot;
 
 use App\Http\Controllers\ChatgptController;
 use App\Repositories\LineBot\BaseRepository as Repository;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use LINE\LINEBot;
 use LINE\LINEBot\HTTPClient\CurlHTTPClient;
@@ -13,10 +12,12 @@ class BaseService
 {
     public $auth_name;
     public $repository;
+    public $chatgpt;
 
-    public function __construct(Repository $repository)
+    public function __construct(Repository $repository, ChatgptController $chatgpt)
     {
         $this->repository = $repository;
+        $this->chatgpt = $chatgpt;
     }
 
     public function handle_request()
@@ -57,7 +58,7 @@ class BaseService
                 $this->repository->record($message_data);
 
                 // 對 chatgpt 發問
-                $chatgpt_response_message = ChatgptController::request($main_text);
+                $chatgpt_response_message = $this->chatgpt->request($main_text);
 
                 $replyToken = $event->getReplyToken();
                 $response   = $bot->replyText($replyToken, $chatgpt_response_message);
