@@ -37,11 +37,11 @@ class BaseService
 
                 $text = trim($event->getText());
                 // 沒 input 有效文字
-                if ( strlen($text) === 0 ) {
+                if (strlen($text) === 0) {
                     continue;
                 }
                 // 非驚嘆號開頭 不處理
-                if ( !Str::startsWith($text, "!") && !Str::startsWith($text, "！") ) {
+                if (!Str::startsWith($text, "!") && !Str::startsWith($text, "！")) {
                     continue;
                 }
                 $main_text = Str::substr($text, 1);
@@ -67,6 +67,13 @@ class BaseService
                     info($response->getHTTPStatus() . ' ' . $response->getRawBody());
                     return false;
                 }
+            } elseif ($event instanceof LINEBot\Event\MessageEvent\AudioMessage) {
+
+                $replyToken = $event->getReplyToken();
+                // $response = $bot->getMessageContent($event->getMessageId());
+                // $getRawBody = $response->getRawBody();
+                // info($getRawBody);
+                $response   = $bot->replyText($replyToken, "這是聲音檔");
             }
         }
     }
