@@ -33,49 +33,56 @@ class BaseService
 
         // 遍歷所有事件並回復一條消息
         foreach ($events as $event) {
-            // 目前只處理文字訊息
-            if ($event instanceof LINEBot\Event\MessageEvent\TextMessage) {
-
-                $text = trim($event->getText());
-                // 沒 input 有效文字
-                if (strlen($text) === 0) {
-                    continue;
-                }
-                // 非驚嘆號開頭 不處理
-                if (!Str::startsWith($text, "!") && !Str::startsWith($text, "！")) {
-                    continue;
-                }
-                $main_text = Str::substr($text, 1);
-
-                $message_data = [
-                    'type'            => $event->getType(),
-                    'timestamp'       => $event->getTimestamp(),
-                    'reply_token'     => $event->getReplyToken(),
-                    'user_id'         => $event->getUserId(),
-                    'event_source_id' => $event->getEventSourceId(),
-                    'text'            => $text,
-                ];
-                $this->repository->record($message_data);
-
-                // 對 chatgpt 發問
-                $chatgpt_response_message = $this->chatgpt->request($main_text);
-
-                $replyToken = $event->getReplyToken();
-                $response   = $bot->replyText($replyToken, $chatgpt_response_message);
-                if ($response->isSucceeded()) {
-                    return true;
-                } else {
-                    info($response->getHTTPStatus() . ' ' . $response->getRawBody());
-                    return false;
-                }
-            } elseif ($event instanceof LINEBot\Event\MessageEvent\AudioMessage) {
-
-                $replyToken = $event->getReplyToken();
-                // $response = $bot->getMessageContent($event->getMessageId());
-                // $getRawBody = $response->getRawBody();
-                // info($getRawBody);
-                $response   = $bot->replyText($replyToken, "這是聲音檔");
-            }
+            match (get_class($event)) {
+                'LINE\LINEBot\Event\MessageEvent\TextMessage' => $this->handle_text_message($event, $bot),
+                'LINE\LINEBot\Event\MessageEvent\AudioMessage' => $this->handle_audio_message($event, $bot),
+            };
         }
+    }
+
+    private function handle_text_message($event, $bot)
+    {
+        // 處理兩邊
+        $text = trim($event->getText());
+
+        // 沒 input 有效文字
+        if (strlen($text) === 0) {
+            return;
+        }
+
+        // 非驚嘆號開頭 不處理
+        if (!Str::startsWith($text, "!") && !Str::startsWith($text, "！")) {
+            return;
+        }
+
+        // 把驚嘆號拿掉
+        $main_text = Str::substr($text, 1);
+
+        $message_data = [
+            'type'            => $event->getType(),
+            'timestamp'       => $event->getTimestamp(),
+            'reply_token'     => $event->getReplyToken(),
+            'user_id'         => $event->getUserId(),
+            'event_source_id' => $event->getEventSourceId(),
+            'text'            => $text,
+        ];
+        $this->repository->record($message_data);
+
+        // 對 chatgpt 發問
+        $chatgpt_response_message = $this->chatgpt->request($main_text);
+
+        // 取得回復訊息必要的 token
+        $replyToken = $event->getReplyToken();
+        // 回復訊息
+        $bot->replyText($replyToken, $chatgpt_response_message);
+    }
+
+    private function handle_audio_message($event, $bot)
+    {
+        $replyToken = $event->getReplyToken();
+        // $response = $bot->getMessageContent($event->getMessageId());
+        // $getRawBody = $response->getRawBody();
+        // info($getRawBody);
+        $response   = $bot->replyText($replyToken, "這是聲音檔");
     }
 }
