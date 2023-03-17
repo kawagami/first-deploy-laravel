@@ -36,6 +36,7 @@ class BaseService
             match (get_class($event)) {
                 'LINE\LINEBot\Event\MessageEvent\TextMessage' => $this->handle_text_message($event, $bot),
                 'LINE\LINEBot\Event\MessageEvent\AudioMessage' => $this->handle_audio_message($event, $bot),
+                default => $this->handle_default($event, $bot),
             };
         }
     }
@@ -84,5 +85,14 @@ class BaseService
         // $getRawBody = $response->getRawBody();
         // info($getRawBody);
         $response   = $bot->replyText($replyToken, "這是聲音檔");
+    }
+
+    /**
+     * 未定義行為
+     */
+    private function handle_default($event, $bot)
+    {
+        $replyToken = $event->getReplyToken();
+        $response   = $bot->replyText($replyToken, "GG");
     }
 }
