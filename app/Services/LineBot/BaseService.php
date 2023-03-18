@@ -104,7 +104,7 @@ class BaseService
         $whisper_message = $this->chatgpt->audio($file);
 
         // 關閉檔案
-        fclose($file);
+        // fclose($file);
         unlink($path);
 
         $bot->replyText($replyToken, $whisper_message);
