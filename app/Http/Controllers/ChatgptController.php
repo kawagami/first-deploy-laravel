@@ -23,4 +23,15 @@ class ChatgptController extends Controller
             return $error->getMessage();
         }
     }
+
+    public function audio($file)
+    {
+        try {
+            return $this->service->audio($file);
+        } catch (\Exception $error) {
+            info($error->getMessage());
+
+            return $error->getMessage();
+        }
+    }
 }

@@ -80,11 +80,35 @@ class BaseService
 
     private function handle_audio_message($event, $bot)
     {
+
+        // get content 的 api path 不同
+        // 創建 LINE Bot 實例
+        // https://developers.line.biz/en/reference/messaging-api/#get-content
+        $httpClient = new CurlHTTPClient(env('LINE_ACCESS_TOKEN'));
+        $audit_bot = new LINEBot($httpClient, ['channelSecret' => env('LINE_CHANNEL_SECRET'), 'endpointBase' => 'https://api-data.line.me']);
+
         $replyToken = $event->getReplyToken();
-        // $response = $bot->getMessageContent($event->getMessageId());
-        // $getRawBody = $response->getRawBody();
-        // info($getRawBody);
-        $response   = $bot->replyText($replyToken, "這是聲音檔");
+        $response = $audit_bot->getMessageContent($event->getMessageId());
+
+        // 設定儲存路徑及檔名
+        $filename = time() . '.mp3'; // 可自訂檔名，此處以時間為例
+        $path = public_path('audio/' . $filename); // 儲存到 public/audio 資料夾下
+
+        // 將檔案寫入本地端
+        file_put_contents($path, $response->getRawBody());
+
+        // 讀取給 whisper 的 stream
+        $file = fopen($path, 'r');
+
+        // 對 whisper 發問
+        $whisper_message = $this->chatgpt->audio($file);
+
+        // 關閉檔案
+        fclose($file);
+        unlink($path);
+
+        $bot->replyText($replyToken, $whisper_message);
+        // info($response->getHTTPStatus() . ' ' . $response->getRawBody());
     }
 
     /**
