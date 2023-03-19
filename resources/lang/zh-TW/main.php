@@ -9,6 +9,7 @@ return [
         "input-placeholder"  => "在這貼上要縮的網址",
         "generate-short-url" => "產生縮址",
         "output-placeholder" => "縮址會出現在這",
+        "copy-url" => "複製縮址",
     ],
     "login" => [
         "title"      => "登入",
