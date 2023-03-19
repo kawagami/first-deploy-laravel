@@ -51,8 +51,12 @@ class BaseService
             return;
         }
 
+        // 取得回復訊息必要的 token
+        $replyToken = $event->getReplyToken();
+
         // 非驚嘆號開頭 不處理
         if (!Str::startsWith($text, "!") && !Str::startsWith($text, "！")) {
+            $bot->replyText($replyToken, "我是 OpenAI 對接機器人\n\n想跟 ChatGPT 問問題請在開頭加上驚嘆號\n\n使用語音訊息的話會將訊息傳換成文字並詢問 ChatGPT");
             return;
         }
 
@@ -71,9 +75,6 @@ class BaseService
 
         // 對 chatgpt 發問
         $chatgpt_response_message = $this->chatgpt->request($main_text);
-
-        // 取得回復訊息必要的 token
-        $replyToken = $event->getReplyToken();
         // 回復訊息
         $bot->replyText($replyToken, $chatgpt_response_message);
     }
@@ -107,7 +108,14 @@ class BaseService
         // fclose($file);
         unlink($path);
 
-        $bot->replyText($replyToken, $whisper_message);
+        // 將 whisper 辨識出來的文字丟給 chatgpt
+        $chatgpt_response_message = $this->chatgpt->request($whisper_message);
+
+        // 組合最後訊息
+        $format = "音檔辨識的文字 :\n%s\n\nChatGPT 的回覆 :\n%s";
+        $result_message = sprintf($format, $whisper_message, $chatgpt_response_message);
+
+        $bot->replyText($replyToken, $result_message);
         // info($response->getHTTPStatus() . ' ' . $response->getRawBody());
     }
 
