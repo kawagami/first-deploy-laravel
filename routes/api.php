@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Apis\AdminController;
 use App\Http\Controllers\Apis\UploadImageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,3 +25,7 @@ Route::post('/upload-image', [UploadImageController::class, 'store']);
 
 // LINE
 Route::post('/line-bot', [LineBotController::class, 'handleRequest']);
+
+// admin
+Route::middleware('auth:sanctum')->get('/admin', [AdminController::class, 'index']);
+// Route::get('/admin', [AdminController::class, 'index']);
