@@ -12,12 +12,12 @@ class AdminController extends Controller
 {
     public function index(Request $request)
     {
-        $raw_line_bot = LineBot::get();
+        $raw_line_bot = LineBot::select(["id", "text"])->get();
         $line_bot = [
             "keys" => collect($raw_line_bot->last())->keys(),
             "values" => $raw_line_bot->values(),
         ];
-        $raw_chatgpt = Chatgpt::get();
+        $raw_chatgpt = Chatgpt::select(["id", "sent_message", "choices_message_content"])->get();
         $chatgpt = [
             "keys" => collect($raw_chatgpt->last())->keys(),
             "values" => $raw_chatgpt->values(),
