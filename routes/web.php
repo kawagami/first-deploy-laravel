@@ -2,16 +2,15 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\NoteController;
 use App\Models\Image;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\Socialite\GitHubController;
 use App\Http\Controllers\Socialite\GoogleController;
 use App\Http\Controllers\ShortUrlController;
 use App\Http\Controllers\LanguageController;
-use Illuminate\Support\Facades\App;
+use App\Models\HackmdNote;
+use App\Http\Controllers\Hackmd\HackmdNoteListController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,7 +36,7 @@ Route::get('/.well-known/acme-challenge/{token}', function ($token) {
     return $token . ".0nyemVIOXF4cpbD77MoDx8DpjP2tnKdhuBvwIarEjc8";
 });
 
-Route::get('/note', [NoteController::class, 'index'])->name('note');
+Route::get('/note', [HackmdNoteListController::class, 'index'])->name('note');
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');

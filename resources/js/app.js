@@ -4,6 +4,7 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+import './note';
 import './short_url';
 import './pi';
 import './bootstrap';
