@@ -24,7 +24,11 @@ export default {
             LineBotShow: false,
             LineBotData: {},
             chatgptShow: false,
-            chatgptData: {}
+            chatgptData: {},
+            allData:{
+                lineBot:{show:false, data:{}, name:"line_bot"},
+                chatgpt:{show:false, data:{}, name:"chatgpt"},
+            }
         }
     },
     methods: {

@@ -39,6 +39,7 @@ Route::get('/.well-known/acme-challenge/{token}', function ($token) {
 Route::get('/note', [HackmdNoteListController::class, 'index'])->name('note');
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('auth/google', [GoogleController::class, 'redirect'])->name('google.login');
