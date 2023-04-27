@@ -8,6 +8,7 @@ import './note';
 import './short_url';
 import './pi';
 import './bootstrap';
+import './thumbor';
 import { createApp } from 'vue';
 
 /**

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Apis\ThumborController;
 use App\Http\Controllers\Apis\AdminController;
 use App\Http\Controllers\Apis\UploadImageController;
 use Illuminate\Http\Request;
@@ -29,3 +30,7 @@ Route::post('/line-bot', [LineBotController::class, 'handleRequest']);
 // admin
 Route::middleware('auth:sanctum')->get('/admin', [AdminController::class, 'index']);
 // Route::get('/admin', [AdminController::class, 'index']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/thumbor', [ThumborController::class, 'get_spec_string'])->name('api.thumbor');
+});

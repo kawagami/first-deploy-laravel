@@ -4,13 +4,12 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Models\Image;
 use Illuminate\Support\Facades\Route;
-use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\Socialite\GitHubController;
 use App\Http\Controllers\Socialite\GoogleController;
 use App\Http\Controllers\ShortUrlController;
 use App\Http\Controllers\LanguageController;
-use App\Models\HackmdNote;
 use App\Http\Controllers\Hackmd\HackmdNoteListController;
+use App\Http\Controllers\ThumborController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +51,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/short-url', [ShortUrlController::class, 'index'])->name('short-url');
     // 新增新址
     Route::post('/short-url', [ShortUrlController::class, 'store'])->name('short-url.store');
+
+    // thumbor
+    Route::get('/thumbor', [ThumborController::class, 'index'])->name('thumbor');
 });
 // 跳轉到縮址紀錄的位置
 Route::get('/short-url/{short_url}', [ShortUrlController::class, 'teleport'])->name('short-url.teleport');

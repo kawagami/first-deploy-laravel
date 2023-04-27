@@ -15,6 +15,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('short-url') }}">@lang('navbar.short-url')</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('thumbor') }}">thumbor</a>
+                </li>
 
                 {{-- only admin --}}
                 @role('admin')
