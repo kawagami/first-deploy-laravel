@@ -1,4 +1,12 @@
 <div class="container">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h1>Thumbor</h1>
+        </div>
+        <div class="col-12 text-center">
+            <h3>使用 rust 建構的圖片處理服務</h3>
+        </div>
+    </div>
     <form action="{{ route('api.thumbor') }}" method="POST">
         @csrf
         <div class="mb-3">
