@@ -9,6 +9,7 @@ const csrf = document.querySelector('meta[name="csrf-token"]').content;
 const thumbor_img_section = document.getElementById('thumbor-img-section');
 const target_image = document.getElementById('target-image');
 const error_massage = document.getElementById('error-massage');
+const filter_style = document.getElementById('filter-style');
 
 if (btn != null) {
     btn.addEventListener('click', function (e) {
@@ -30,7 +31,11 @@ if (btn != null) {
             formData.append('resize-width', resize_width.value);
             formData.append('resize-height', resize_height.value);
         }
-        formData.append('filter-checkbox', filter_checkbox.checked);
+
+        if (filter_checkbox.checked) {
+            formData.append('filter-checkbox', filter_checkbox.checked);
+            formData.append('filter-style', filter_style.value);
+        }
         formData.append('watermark-checkbox', watermark_checkbox.checked);
         formData.append('target-image', target_image.value);
 

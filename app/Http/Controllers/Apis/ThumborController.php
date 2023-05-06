@@ -11,10 +11,7 @@ class ThumborController extends Controller
     public function get_spec_string(Request $request)
     {
         // ====== 控制圖片後製條件 ======
-        $data = [
-            "filter"    => false,
-            "watermark" => false,
-        ];
+        $data = [];
 
         $resize_checkbox = $request->input('resize-checkbox') === "true" ? true : false;
         $filter_checkbox = $request->input('filter-checkbox') === "true" ? true : false;
@@ -27,7 +24,7 @@ class ThumborController extends Controller
             ];
         }
         if ($filter_checkbox) {
-            $data["filter"] = true;
+            $data["filter"] = intval($request->input('filter-style'));
         }
         if ($watermark_checkbox) {
             $data["watermark"] = true;
