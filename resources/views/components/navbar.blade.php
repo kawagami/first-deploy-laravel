@@ -21,9 +21,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="https://vue.kawa.homes/">武將列表</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="https://vue.kawa.homes/">env test</a>
-                </li>
 
                 {{-- only admin --}}
                 @role('admin')
