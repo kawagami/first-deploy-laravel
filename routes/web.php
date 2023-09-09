@@ -53,7 +53,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/short-url', [ShortUrlController::class, 'store'])->name('short-url.store');
 
     // thumbor
-    Route::get('/thumbor', [ThumborController::class, 'index'])->name('thumbor');
+    // Route::get('/thumbor', [ThumborController::class, 'index'])->name('thumbor');
 });
 // 跳轉到縮址紀錄的位置
 Route::get('/short-url/{short_url}', [ShortUrlController::class, 'teleport'])->name('short-url.teleport');

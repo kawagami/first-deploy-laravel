@@ -15,9 +15,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('short-url') }}">@lang('navbar.short-url')</a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="nav-link" href="{{ route('thumbor') }}">thumbor</a>
-                </li>
+                </li> --}}
                 <li class="nav-item">
                     <a class="nav-link" href="https://vue.kawa.homes/">武將列表</a>
                 </li>
