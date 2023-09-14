@@ -25,3 +25,5 @@ jobs:
           git pull
           cd ..
           sh up.sh
+          sh yarn_build.sh
+      args: -tt
