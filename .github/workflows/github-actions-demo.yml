@@ -20,10 +20,7 @@ jobs:
         username: ${{ secrets.VULTR_USERNAME }}
         key: ${{ secrets.VULTR_SSH_KEY }}
         script: |
-          sh down.sh &&
-          cd laravel &&
-          git pull &&
-          cd .. &&
-          sh up.sh  &&
-          sh app.sh yarn build &&
-          exit 0
+          cd laravel
+          git pull
+          cd ..
+          sh app.sh yarn build
