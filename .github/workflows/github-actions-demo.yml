@@ -23,4 +23,4 @@ jobs:
           cd laravel
           git pull
           cd ..
-          sh app.sh yarn build
+          sh app.sh "yarn build"
