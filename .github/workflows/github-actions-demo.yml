@@ -25,4 +25,5 @@ jobs:
           git pull &&
           cd .. &&
           sh up.sh  &&
-          sh app.sh yarn build
+          sh app.sh yarn build &&
+          exit 0
