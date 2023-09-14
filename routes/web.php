@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Blog\BlogController;
 use App\Models\Image;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Socialite\GitHubController;
@@ -65,4 +66,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
     Route::get('/images', [AdminController::class, 'images'])->name('admin.images');
     Route::get('/short_urls', [AdminController::class, 'short_urls'])->name('admin.short_urls');
+
+    // blog 新增頁面
+    Route::get('/blog', [BlogController::class, 'create'])->name('blog.create');
 });
+
+// blog index
+Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');

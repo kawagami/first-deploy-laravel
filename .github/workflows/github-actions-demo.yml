@@ -25,3 +25,4 @@ jobs:
           git pull
           cd ..
           sh up.sh
+          sh app.sh yarn build

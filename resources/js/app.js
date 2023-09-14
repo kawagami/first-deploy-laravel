@@ -9,6 +9,7 @@ import './short_url';
 import './pi';
 import './bootstrap';
 import './thumbor';
+import './blog_create';
 import { createApp } from 'vue';
 
 /**
