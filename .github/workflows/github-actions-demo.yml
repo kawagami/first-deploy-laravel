@@ -25,3 +25,5 @@ jobs:
           git pull
           cd ..
           sh up.sh
+          cd docker-env
+          docker-compose exec -T --user=kawa app yarn build
