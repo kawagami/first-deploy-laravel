@@ -6,6 +6,7 @@ use App\Http\Controllers\Apis\UploadImageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Apis\LineBotController;
+use App\Http\Controllers\SgViteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,3 +35,6 @@ Route::middleware('auth:sanctum')->get('/admin', [AdminController::class, 'index
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/thumbor', [ThumborController::class, 'get_spec_string'])->name('api.thumbor');
 });
+
+// sg-vite
+Route::get('/sg-vite', [SgViteController::class, 'index']);
