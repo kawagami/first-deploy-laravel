@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Apis\LineBotController;
 use App\Http\Controllers\SgViteController;
+use App\Http\Controllers\User\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,3 +39,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // sg-vite
 Route::get('/sg-vite', [SgViteController::class, 'index']);
+
+Route::prefix('user')->group(function () {
+    Route::post('/', [UserController::class, 'index'])->middleware('sgtoken');
+    Route::post('/login', [UserController::class, 'login']);
+    Route::post('/token_check', [UserController::class, 'token_check']);
+});
