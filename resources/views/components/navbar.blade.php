@@ -51,28 +51,6 @@
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ms-auto">
 
-                {{-- language --}}
-                <li class="nav-item dropdown">
-                    <a id="lang-select" class="nav-link dropdown-toggle" href="#" role="button"
-                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                        @lang('langs.' . app()->getLocale())
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="lang-select">
-                        @foreach (__('langs') as $key => $locale)
-                            @if ($key != app()->getLocale())
-                                <a class="dropdown-item" href="#"
-                                    onclick="event.preventDefault();document.getElementById('lang-{{ $key }}').submit();">
-                                    @lang('langs.' . $key)
-                                </a>
-                                <form id="lang-{{ $key }}" action="{{ route('lang', $key) }}" method="POST"
-                                    class="d-none">
-                                    @csrf
-                                </form>
-                            @endif
-                        @endforeach
-                    </div>
-                </li>
-
                 <!-- Authentication Links -->
                 @guest
                     @if (Route::has('login'))
