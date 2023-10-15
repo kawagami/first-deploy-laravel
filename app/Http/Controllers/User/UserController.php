@@ -19,7 +19,27 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        return $this->ok([], '受到 sgtoken 保護的文字');
+        $authorizationHeader = $request->header('Authorization');
+
+        if ($authorizationHeader) {
+            // 使用空格分割 Authorization 头部，并获取第二部分
+            $parts = explode(' ', $authorizationHeader);
+            if (count($parts) === 2 && $parts[0] === 'Bearer') {
+                $token = $parts[1]; // 这里是 Token 的部分
+                $id = cache($token);
+                if ($id) {
+                    $user = User::select(['email'])->find($id);
+
+                    return $this->ok([$user], '受到 sgtoken 保護的資料');
+                }
+
+                return $this->bad_request([], 'token 對應的 ID 不存在');
+            }
+
+            return $this->bad_request([], 'token 格式有誤');
+        }
+
+        return $this->unauthorized([], 'token 是必須的');
     }
 
     function login(Request $request)
@@ -37,14 +57,14 @@ class UserController extends Controller
         $user = User::where('email', $email)->first();
 
         if (is_null($user)) {
-            return $this->bad_request([], 'email not found');
+            return $this->unauthorized([], 'email not found');
         }
 
         // $result = Hash::check($user->password, $user->password);
         $password_check = password_verify($password, $user->password);
 
         if (!$password_check) {
-            return $this->bad_request([], 'password error');
+            return $this->unauthorized([], 'password error');
         }
 
         // Cache::clear();
