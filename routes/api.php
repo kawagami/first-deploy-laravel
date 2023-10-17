@@ -7,6 +7,7 @@ use App\Http\Controllers\Apis\ImageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Apis\LineBotController;
+use App\Http\Controllers\Blog\BlogController;
 use App\Http\Controllers\SgViteController;
 use App\Http\Controllers\User\UserController;
 
@@ -52,4 +53,8 @@ Route::middleware('sgtoken')->group(function () {
     Route::get('/image', [ImageController::class, 'index']);
     Route::post('/image', [ImageController::class, 'store']);
     Route::delete('/delete-all-image', [ImageController::class, 'destroy_all']);
+
 });
+// blog
+Route::get('/blog', [BlogController::class, 'read']);
+Route::post('/blog', [BlogController::class, 'store']);
