@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Blog;
 
-use App\Models\Blog\Blog as Model;
+use App\Models\Blog\Blog;
 use App\Models\Blog\BlogComponent;
 use App\Models\Blog\BlogComponentArticle;
 use App\Models\Blog\BlogComponentImage;
@@ -15,7 +15,7 @@ class BaseRepository
     public $image;
 
     public function __construct(
-        Model $model,
+        Blog $model,
         BlogComponent $component,
         BlogComponentArticle $article,
         BlogComponentImage $image
@@ -34,12 +34,12 @@ class BaseRepository
         ])->get();
     }
 
-    public function store(array $data): Model
+    public function store(array $data): Blog
     {
         $blog_data = [
             "user_id"       => 1,
-            "name"          => "completetest01",
-            "short_content" => "completetest01",
+            "name"          => data_get($data, "name"),
+            "short_content" => data_get($data, "short_content"),
         ];
         $blog_result = $this->model->create($blog_data);
 
@@ -72,6 +72,42 @@ class BaseRepository
         ])->find($blog_result->id);
 
         return $data;
+    }
+
+    public function store_blog(array $data): Blog
+    {
+        return $this->model->create([
+            "user_id"       => data_get($data, "user_id"),
+            "name"          => data_get($data, "name"),
+            "short_content" => data_get($data, "short_content"),
+        ]);
+    }
+
+    public function store_component(array $data): BlogComponent
+    {
+        return $this->component->create([
+            "blog_id" => data_get($data, "blog_id"),
+            "type"    => data_get($data, "type"),
+        ]);
+    }
+
+    public function store_article(array $data): BlogComponentArticle
+    {
+        return $this->article->create([
+            "component_id" => data_get($data, "component_id"),
+            "content"      => data_get($data, "content"),
+        ]);
+    }
+
+    public function store_image(array $data): BlogComponentImage
+    {
+        return $this->image->create([
+            "component_id"  => data_get($data, "component_id"),
+            "name"          => data_get($data, "name"),
+            "url"           => data_get($data, "url"),
+            "original_name" => data_get($data, "original_name"),
+            "status"        => "0",
+        ]);
     }
 
     public function create(array $data)

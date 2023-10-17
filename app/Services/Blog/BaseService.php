@@ -20,6 +20,23 @@ class BaseService
 
     public function store(array $data): array
     {
+        // blog
+        // $blog = $this->repository->store_blog([
+        //     "name"          => data_get($data, "name"),
+        //     "short_content" => data_get($data, "short_content"),
+        // ]);
+
+        // component
+        $components = data_get($data, "components");
+
+        return [
+            $components
+        ];
+
+        // image
+
+        // article
+
         return $this->repository->store($data)->toArray();
     }
 

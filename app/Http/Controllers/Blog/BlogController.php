@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Blog;
 use App\Services\Blog\BaseService;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreBlogRequest;
 
 class BlogController extends Controller
 {
@@ -32,10 +33,10 @@ class BlogController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreBlogRequest $request)
     {
         try {
-            return $this->ok($this->service->store($request->input()), '');
+            return $this->ok($this->service->store($request->validated()), '');
         } catch (\Exception $error) {
             info($error);
             return $this->bad_request([], $error->getMessage());

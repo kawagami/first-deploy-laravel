@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Contracts\Validation\Validator;
 
 class StoreBlogRequest extends FormRequest
 {
@@ -24,8 +26,18 @@ class StoreBlogRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|unique:posts|max:255',
-            'body'  => 'required',
+            'name'          => 'required|unique:blogs,name|string|max:255',
+            'short_content' => 'required|string|max:255',
+            'components'    => 'array',
         ];
+    }
+
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'success'   => false,
+            'message'   => 'Validation errors',
+            'data'      => $validator->errors()
+        ]));
     }
 }
