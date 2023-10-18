@@ -50,6 +50,13 @@ class BlogController extends Controller
         }
     }
 
+    public function get_all()
+    {
+        $data = $this->service->read();
+
+        return view("index")->with("data", $data);
+    }
+
     /**
      * Display a listing of the resource.
      *

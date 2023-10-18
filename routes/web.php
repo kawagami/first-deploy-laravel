@@ -23,14 +23,7 @@ use App\Http\Controllers\ThumborController;
 |
 */
 
-Route::get('/', function () {
-    if (Image::first() !== null) {
-        $image = 'storage/' . Image::first()->path;
-    } else {
-        $image = '';
-    }
-    return view('index')->with('image', $image);
-})->name('index');
+Route::get('/', [BlogController::class, 'get_all'])->name('index');
 
 Route::get('/.well-known/acme-challenge/{token}', function ($token) {
     return $token . ".0nyemVIOXF4cpbD77MoDx8DpjP2tnKdhuBvwIarEjc8";
