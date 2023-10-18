@@ -26,6 +26,14 @@ class BaseRepository
         $this->image     = $image;
     }
 
+    public function read_one($id): Blog
+    {
+        return $this->model->with([
+            "components.image",
+            "components.article",
+        ])->find($id);
+    }
+
     public function read(): \Illuminate\Database\Eloquent\Collection
     {
         return $this->model->with([

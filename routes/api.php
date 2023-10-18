@@ -54,7 +54,7 @@ Route::middleware('sgtoken')->group(function () {
     Route::post('/image', [ImageController::class, 'store']);
     Route::delete('/delete-all-image', [ImageController::class, 'destroy_all']);
 
+    // blog
+    Route::get('/blog', [BlogController::class, 'read']);
+    Route::post('/blog', [BlogController::class, 'store']);
 });
-// blog
-Route::get('/blog', [BlogController::class, 'read']);
-Route::post('/blog', [BlogController::class, 'store']);

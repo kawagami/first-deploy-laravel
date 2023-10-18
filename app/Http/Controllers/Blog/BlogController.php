@@ -6,6 +6,7 @@ use App\Services\Blog\BaseService;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreBlogRequest;
+use Illuminate\Support\Facades\DB;
 
 class BlogController extends Controller
 {
@@ -36,9 +37,15 @@ class BlogController extends Controller
     public function store(StoreBlogRequest $request)
     {
         try {
-            return $this->ok($this->service->store($request->validated()), '');
+            DB::beginTransaction();
+            $result = $this->service->store($request->validated());
+            DB::commit();
+
+            return $this->ok($result, '');
         } catch (\Exception $error) {
+            DB::rollBack();
             info($error);
+
             return $this->bad_request([], $error->getMessage());
         }
     }
