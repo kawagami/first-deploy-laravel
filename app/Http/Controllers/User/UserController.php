@@ -19,27 +19,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $authorizationHeader = $request->header('Authorization');
-
-        if ($authorizationHeader) {
-            // 使用空格分割 Authorization 头部，并获取第二部分
-            $parts = explode(' ', $authorizationHeader);
-            if (count($parts) === 2 && $parts[0] === 'Bearer') {
-                $token = $parts[1]; // 这里是 Token 的部分
-                $id = cache($token);
-                if ($id) {
-                    $user = User::select(['email'])->find($id);
-
-                    return $this->ok([$user], '受到 sgtoken 保護的資料');
-                }
-
-                return $this->bad_request([], 'token 對應的 ID 不存在');
-            }
-
-            return $this->bad_request([], 'token 格式有誤');
-        }
-
-        return $this->unauthorized([], 'token 是必須的');
+        return response($request->user());
     }
 
     function login(Request $request)

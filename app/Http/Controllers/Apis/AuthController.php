@@ -16,7 +16,7 @@ class AuthController extends Controller
     {
         $fields = $request->validate([
             'email'    => 'required|string',
-            'password' => 'required|string|confirmed',
+            'password' => 'required|string',
         ]);
 
         // check
@@ -46,6 +46,16 @@ class AuthController extends Controller
         return [
             'message' => 'Logged out'
         ];
+    }
+
+    /**
+     * sanctum test
+     */
+    public function test(Request $request)
+    {
+        return response([
+            'test' => $request->user()
+        ]);
     }
 
     /**

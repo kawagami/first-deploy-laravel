@@ -2,7 +2,7 @@
 
 @section('css')
     <style>
-        .container-md {
+        .container-lg {
             margin-top: 10px;
             height: calc(100vh - 70px);
         }
