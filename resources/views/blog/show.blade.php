@@ -10,7 +10,7 @@
 @endsection
 
 @section('main')
-    @include('blog.components.index')
+    @include('blog.components.show')
 @endsection
 
 @section('js')

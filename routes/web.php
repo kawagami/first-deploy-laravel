@@ -23,7 +23,9 @@ use App\Http\Controllers\ThumborController;
 |
 */
 
-Route::get('/', [BlogController::class, 'get_all'])->name('index');
+Route::get('/', function () {
+    return redirect()->route('blog.index');
+})->name('index');
 
 Route::get('/.well-known/acme-challenge/{token}', function ($token) {
     return $token . ".0nyemVIOXF4cpbD77MoDx8DpjP2tnKdhuBvwIarEjc8";
@@ -60,9 +62,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/images', [AdminController::class, 'images'])->name('admin.images');
     Route::get('/short_urls', [AdminController::class, 'short_urls'])->name('admin.short_urls');
 
-    // blog 新增頁面
-    Route::get('/blog', [BlogController::class, 'create'])->name('blog.create');
 });
 
-// blog index
-Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+Route::prefix('blog')->group(function () {
+    // index
+    Route::get('/', [BlogController::class, 'get_all'])->name('blog.index');
+    // show
+    Route::get('/{id}', [BlogController::class, 'get_one'])->name('blog.show');
+});

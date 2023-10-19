@@ -18,6 +18,9 @@ class BlogController extends Controller
         $this->service = $service;
     }
 
+    /**
+     * API get all
+     */
     function read()
     {
         try {
@@ -50,11 +53,24 @@ class BlogController extends Controller
         }
     }
 
+    /**
+     * blog 取得全部內容
+     */
     public function get_all()
     {
         $data = $this->service->read();
 
-        return view("index")->with("data", $data);
+        return view("blog.index")->with("data", $data);
+    }
+
+    /**
+     * blog 取得特定內容
+     */
+    public function get_one(Request $request, int $id)
+    {
+        $data = $this->service->read_one($id);
+
+        return view("blog.show")->with("data", $data);
     }
 
     /**

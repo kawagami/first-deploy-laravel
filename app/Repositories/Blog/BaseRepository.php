@@ -36,10 +36,13 @@ class BaseRepository
 
     public function read(): \Illuminate\Database\Eloquent\Collection
     {
-        return $this->model->with([
-            "components.image",
-            "components.article",
-        ])->get();
+        return $this->model
+            ->with([
+                "components.image",
+                "components.article",
+            ])
+            ->orderByDesc('updated_at')
+            ->get();
     }
 
     public function store(array $data): Blog

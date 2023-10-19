@@ -18,6 +18,11 @@ class BaseService
         return $this->repository->read()->toArray();
     }
 
+    public function read_one(int $id): array
+    {
+        return $this->repository->read_one($id)->toArray();
+    }
+
     public function store(array $data): array
     {
         // blog
