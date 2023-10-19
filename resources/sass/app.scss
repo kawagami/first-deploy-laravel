@@ -9,4 +9,15 @@
 
 body {
     background-image: url("https://kawa.homes/storage/Oc3O49mLyntjYAdxgmN8RgEWrDrI0hl3wqaaYsBC.jpg");
+    background-size: cover;
+}
+
+nav {
+    background-image: linear-gradient(45deg,
+            rgb(135, 186, 227) 0%,
+            rgb(135, 186, 227) 25%,
+            #fff 30%,
+            #fff 85%,
+            #ffd194 90%,
+            #ffd194 100%);
 }
