@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Apis\ThumborController;
 use App\Http\Controllers\Apis\AdminController;
+use App\Http\Controllers\Apis\AuthController;
 use App\Http\Controllers\Apis\UploadImageController;
 use App\Http\Controllers\Apis\ImageController;
 use Illuminate\Http\Request;
@@ -57,4 +58,10 @@ Route::middleware('sgtoken')->group(function () {
     // blog
     Route::get('/blog', [BlogController::class, 'read']);
     Route::post('/blog', [BlogController::class, 'store']);
+});
+
+// sanctum log in & out
+Route::post('/login', [AuthController::class, 'login']);
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
