@@ -48,16 +48,6 @@ Route::prefix('user')->group(function () {
     Route::post('/token_check', [UserController::class, 'token_check']);
 });
 
-Route::middleware('sgtoken')->group(function () {
-    // Route::get('/image', [ImageController::class, 'index']);
-    // Route::post('/image', [ImageController::class, 'store']);
-    // Route::delete('/delete-all-image', [ImageController::class, 'destroy_all']);
-
-    // // blog
-    // Route::get('/blog', [BlogController::class, 'read']);
-    // Route::post('/blog', [BlogController::class, 'store']);
-});
-
 // sanctum log in & out
 Route::post('/login', [AuthController::class, 'login']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
