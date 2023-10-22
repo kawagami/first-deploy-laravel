@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\Apis\ThumborController;
 use App\Http\Controllers\Apis\AdminController;
+use App\Http\Controllers\Apis\AuthController;
 use App\Http\Controllers\Apis\UploadImageController;
 use App\Http\Controllers\Apis\ImageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Apis\LineBotController;
+use App\Http\Controllers\Blog\BlogController;
 use App\Http\Controllers\SgViteController;
 use App\Http\Controllers\User\UserController;
 
@@ -42,14 +44,27 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::get('/sg-vite', [SgViteController::class, 'index']);
 
 Route::prefix('user')->group(function () {
-    Route::post('/', [UserController::class, 'index'])->middleware('sgtoken');
-    Route::get('/info', [UserController::class, 'index'])->middleware('sgtoken');
     Route::post('/login', [UserController::class, 'login']);
     Route::post('/token_check', [UserController::class, 'token_check']);
 });
 
-Route::middleware('sgtoken')->group(function () {
+// sanctum log in & out
+Route::post('/login', [AuthController::class, 'login']);
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+
+    //
+    Route::post('/user', [UserController::class, 'index']);
+    Route::get('/user/info', [UserController::class, 'index']);
+
+    // sg-vite
     Route::get('/image', [ImageController::class, 'index']);
     Route::post('/image', [ImageController::class, 'store']);
     Route::delete('/delete-all-image', [ImageController::class, 'destroy_all']);
+
+    // blog
+    Route::get('/blog', [BlogController::class, 'read']);
+    Route::post('/blog', [BlogController::class, 'store']);
+
+    Route::post('/test', [AuthController::class, 'test']);
 });

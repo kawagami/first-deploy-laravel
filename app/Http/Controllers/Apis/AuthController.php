@@ -3,12 +3,63 @@
 namespace App\Http\Controllers\Apis;
 
 use App\Http\Controllers\Controller;
-use App\Models\Image;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
 
-class ImageController extends Controller
+class AuthController extends Controller
 {
+    /**
+     * sanctum login
+     */
+    public function login(Request $request)
+    {
+        $fields = $request->validate([
+            'email'    => 'required|string',
+            'password' => 'required|string',
+        ]);
+
+        // check
+        $user = User::where('email', data_get($fields, 'email'))->first();
+
+        if (is_null($user) || !Hash::check(data_get($fields, 'password'), $user->password)) {
+            return response([
+                'message' => 'Bad creds'
+            ], 401);
+        }
+
+        $token = $user->createToken('myapptoken')->plainTextToken;
+
+        return response([
+            'user'  => $user,
+            'token' => $token,
+        ]);
+    }
+
+    /**
+     * sanctum logout
+     */
+    public function logout(Request $request)
+    {
+        $request->user()->tokens()->delete();
+
+        return [
+            'message' => 'Logged out'
+        ];
+    }
+
+    /**
+     * sanctum test
+     */
+    public function test(Request $request)
+    {
+        // info(
+        //     $request->input()
+        // );
+
+        return response($request->input());
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,9 +67,7 @@ class ImageController extends Controller
      */
     public function index()
     {
-        $data = Image::select(['name', 'url'])->get();
-
-        return response()->json($data);
+        //
     }
 
     /**
@@ -39,31 +88,7 @@ class ImageController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->hasFile('file')) {
-            $file     = $request->file('file');
-            $fileName = $file->getClientOriginalName();
-
-            // Storage::put 會存放在 /storage/app 下
-            $path     = Storage::put('public', $file);
-            $basename = basename($path);
-            $data     = [
-                "user_id"       => $request->user()->id,
-                "name"          => $basename,
-                "url"           => asset("storage/{$basename}"),
-                "original_name" => $fileName,
-            ];
-
-            $image            = Image::create($data);
-            $data['image_id'] = $image->id;
-
-            unset($data["user_id"]);
-
-            return response($data, 201);
-        } else {
-            return response([
-                'message' => '未找到上传文件'
-            ], 400);
-        }
+        //
     }
 
     /**
@@ -109,20 +134,5 @@ class ImageController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    /**
-     * Remove all temp images
-     *
-     * @return void
-     */
-    public function destroy_all()
-    {
-        $images = Image::where('status', '0')->get();
-
-        foreach ($images as $image) {
-            Storage::delete('public/' . $image->name);
-            $image->delete();
-        }
     }
 }

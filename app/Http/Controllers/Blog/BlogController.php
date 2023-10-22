@@ -2,11 +2,77 @@
 
 namespace App\Http\Controllers\Blog;
 
+use App\Services\Blog\BaseService;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreBlogRequest;
+use Illuminate\Support\Facades\DB;
 
 class BlogController extends Controller
 {
+    private $service;
+
+    public function __construct(
+        BaseService $service
+    ) {
+        $this->service = $service;
+    }
+
+    /**
+     * API get all
+     */
+    function read()
+    {
+        try {
+            return $this->ok($this->service->read(), '');
+        } catch (\Exception $error) {
+            info($error);
+            return $this->bad_request([], $error->getMessage());
+        }
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(StoreBlogRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            $result = $this->service->store($request->validated());
+            DB::commit();
+
+            return $this->created($result, '');
+        } catch (\Exception $error) {
+            DB::rollBack();
+            info($error);
+
+            return $this->bad_request([], $error->getMessage());
+        }
+    }
+
+    /**
+     * blog 取得全部內容
+     */
+    public function get_all()
+    {
+        $data = $this->service->read();
+
+        return view("blog.index")->with("data", $data);
+    }
+
+    /**
+     * blog 取得特定內容
+     */
+    public function get_one(Request $request, int $id)
+    {
+        $data = $this->service->read_one($id);
+
+        return view("blog.show")->with("data", $data);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -25,17 +91,6 @@ class BlogController extends Controller
     public function create()
     {
         return view("blog.create");
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**
