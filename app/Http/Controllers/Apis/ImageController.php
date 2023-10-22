@@ -53,7 +53,8 @@ class ImageController extends Controller
                 "original_name" => $fileName,
             ];
 
-            Image::create($data);
+            $image            = Image::create($data);
+            $data['image_id'] = $image->id;
 
             unset($data["user_id"]);
 

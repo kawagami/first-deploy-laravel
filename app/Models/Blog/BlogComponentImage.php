@@ -11,6 +11,7 @@ class BlogComponentImage extends Model
 
     protected $fillable = [
         "component_id",
+        "image_id",
         "name",
         "url",
         "original_name",

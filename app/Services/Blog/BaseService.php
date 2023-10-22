@@ -72,6 +72,7 @@ class BaseService
             if (!empty($image)) {
                 $image_result = $this->repository->store_image([
                     "component_id"  => $component_result->id,
+                    "image_id"      => data_get($image, "image_id"),
                     "name"          => data_get($image, "name"),
                     "url"           => data_get($image, "url"),
                     "original_name" => data_get($image, "original_name"),

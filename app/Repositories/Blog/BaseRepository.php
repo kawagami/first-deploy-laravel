@@ -114,6 +114,7 @@ class BaseRepository
     {
         return $this->image->create([
             "component_id"  => data_get($data, "component_id"),
+            "image_id"      => data_get($data, "image_id"),
             "name"          => data_get($data, "name"),
             "url"           => data_get($data, "url"),
             "original_name" => data_get($data, "original_name"),
