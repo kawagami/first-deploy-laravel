@@ -19,7 +19,7 @@
 
                     @case('2')
                         <div class="col-12" style="text-align: center;">
-                            <img src="{{ data_get($component, 'image.url') }}" alt="">
+                            <img class="w-100" src="{{ data_get($component, 'image.url') }}" alt="">
                         </div>
                     @break
 
@@ -29,7 +29,7 @@
 
                         </div>
                         <div class="col-6">
-                            <img src="{{ data_get($component, 'image.url') }}" alt="">
+                            <img class="w-100" src="{{ data_get($component, 'image.url') }}" alt="">
                         </div>
                 @endswitch
             </div>
