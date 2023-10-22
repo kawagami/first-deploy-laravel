@@ -8,9 +8,19 @@
 @import 'bootstrap/scss/bootstrap';
 
 body {
-    background-image: url("https://kawa.homes/storage/Oc3O49mLyntjYAdxgmN8RgEWrDrI0hl3wqaaYsBC.jpg");
-    // background-size: cover;
-    // background-repeat: no-repeat;
+    background-image: url("../images/bgc2.jpg");
+    background-size: cover;
+    background-repeat: repeat;
+
+
+    .container,
+    .container-lg {
+        margin-top: 10px;
+        height: calc(100vh - 70px);
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 10px;
+        overflow: auto;
+    }
 }
 
 nav {

@@ -1,4 +1,4 @@
-<div class="container-lg overflow-auto">
+<div class="container-lg">
 
     <div class="row">
 
