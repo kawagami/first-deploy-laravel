@@ -66,5 +66,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/blog', [BlogController::class, 'read']);
     Route::post('/blog', [BlogController::class, 'store']);
 
-    Route::get('/test', [AuthController::class, 'test']);
+    Route::post('/test', [AuthController::class, 'test']);
 });

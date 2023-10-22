@@ -44,7 +44,7 @@ class BlogController extends Controller
             $result = $this->service->store($request->validated());
             DB::commit();
 
-            return $this->ok($result, '');
+            return $this->created($result, '');
         } catch (\Exception $error) {
             DB::rollBack();
             info($error);

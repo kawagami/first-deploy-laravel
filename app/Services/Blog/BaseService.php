@@ -82,7 +82,7 @@ class BaseService
             if (!empty($article)) {
                 $article_result = $this->repository->store_article([
                     "component_id" => $component_result->id,
-                    "content"      => data_get($article, "content"),
+                    "content"      => $article,
                 ]);
             }
         }

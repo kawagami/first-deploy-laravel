@@ -53,9 +53,11 @@ class AuthController extends Controller
      */
     public function test(Request $request)
     {
-        return response([
-            'test' => $request->user()
-        ]);
+        // info(
+        //     $request->input()
+        // );
+
+        return response($request->input());
     }
 
     /**

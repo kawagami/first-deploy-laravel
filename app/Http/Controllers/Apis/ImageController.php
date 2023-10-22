@@ -47,7 +47,7 @@ class ImageController extends Controller
             $path     = Storage::put('public', $file);
             $basename = basename($path);
             $data     = [
-                "user_id"       => 1,
+                "user_id"       => $request->user()->id,
                 "name"          => $basename,
                 "url"           => asset("storage/{$basename}"),
                 "original_name" => $fileName,
@@ -55,18 +55,14 @@ class ImageController extends Controller
 
             Image::create($data);
 
-            return response()->json([
-                'basename($path)' => basename($path),
-                'url'             => asset("storage/{$basename}"),
-                'Image::get()'    => Image::select(['name', 'url'])->get(),
-            ]);
+            unset($data["user_id"]);
+
+            return response($data, 201);
         } else {
-            return response()->json([
+            return response([
                 'message' => '未找到上传文件'
             ], 400);
         }
-
-        return response()->json([]);
     }
 
     /**

@@ -21,6 +21,15 @@ class Controller extends BaseController
         ], 200);
     }
 
+    protected function created(array $data, string $message): JsonResponse
+    {
+        return response()->json([
+            'success' => true,
+            'data'    => $data,
+            'message' => $message,
+        ], 201);
+    }
+
     protected function bad_request(array $data, string $message): JsonResponse
     {
         return response()->json([
