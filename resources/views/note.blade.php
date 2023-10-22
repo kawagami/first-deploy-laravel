@@ -4,7 +4,7 @@
 @endsection
 
 @section('main')
-    @include('components.fixing')
+    @include('components.note')
 @endsection
 
 @section('js')

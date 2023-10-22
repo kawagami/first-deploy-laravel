@@ -21,35 +21,39 @@ class HackmdNoteListController extends Controller
     {
         $note_guest_can_read = HackmdNoteList::with('tags')
             ->where('readPermission', 'guest')
-            ->orderByDesc('createdAt');
+            // ->orderByDesc('lastChangedAt')
+            ->orderByDesc('createdAt')
+            ->get();
 
         // 過濾有"工作" tag 的筆記
-        $note_guest_can_read->whereHas('tags', function ($query) {
-            $query->where('name', '<>', '工作');
+        $note_except_work = $note_guest_can_read->filter(function ($q) {
+            return !$q->tags()->where('name', '工作')->exists();
         });
 
         // 取得條件的 note
         if ($request->has('tag') && $request->get('tag') !== 'all') {
-            $tag_id = $request->get('tag');
-            $note_guest_can_read->whereHas('tags', function ($query) use ($tag_id) {
-                $query->where(DB::raw('"hackmd_tags"."id"'), $tag_id);
+            // dd($note_except_work);
+            $note_except_work = $note_except_work->filter(function ($q) use ($request) {
+                return $q->tags()
+                    ->where('hackmd_tags.id', '=', $request->get('tag'))
+                    ->exists();
             });
+            // dd($note_except_work);
         }
 
-        $notes = $note_guest_can_read->get();
-
         // 轉換日期
-        $notes = $notes->map(function ($d) {
-            $d->createdAt     = Carbon::parse(($d->createdAt / 1000))->toDateTimeString();
+        $note_except_work = $note_except_work->map(function ($d) {
+            $d->createdAt = Carbon::parse(($d->createdAt / 1000))->toDateTimeString();
             $d->lastChangedAt = Carbon::parse(($d->lastChangedAt / 1000))->toDateTimeString();
-
             return $d;
         });
 
-        return view('note', [
-            'notes' => $notes,
-            'tags'  => HackmdTag::get(),
-        ]);
+        $data = [
+            'notes' => $note_except_work,
+            'tags' => HackmdTag::get(),
+        ];
+        //
+        return view('note', $data);
     }
 
     public static function get_notes_list(): string|null
