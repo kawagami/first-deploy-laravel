@@ -41,14 +41,6 @@ class HackmdNoteListController extends Controller
         // paginate 取資料的話，前面的條件會秀逗
         $notes = $query->get();
 
-        // 轉換日期
-        $notes = $notes->map(function ($d) {
-            $d->createdAt     = Carbon::parse(($d->createdAt / 1000))->toDateTimeString();
-            $d->lastChangedAt = Carbon::parse(($d->lastChangedAt / 1000))->toDateTimeString();
-
-            return $d;
-        });
-
         return view('note', [
             'notes' => $notes,
             'tags'  => HackmdTag::get(),
