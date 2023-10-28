@@ -27,7 +27,7 @@ class BaseService
     {
         // blog
         $blog_result = $this->repository->store_blog([
-            "user_id"       => 1,
+            "user_id"       => request()->user()->id,
             "name"          => data_get($data, "name"),
             "short_content" => data_get($data, "short_content"),
         ]);
@@ -76,6 +76,7 @@ class BaseService
                     "name"          => data_get($image, "name"),
                     "url"           => data_get($image, "url"),
                     "original_name" => data_get($image, "original_name"),
+                    "status"        => "0",
                 ]);
             }
 
