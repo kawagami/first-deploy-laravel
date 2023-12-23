@@ -26,7 +26,7 @@ class BaseRepository
         $this->image     = $image;
     }
 
-    public function read_one($id): Blog
+    public function read_one($id): Blog|null
     {
         return $this->model->with([
             "components.image",

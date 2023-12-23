@@ -3,6 +3,7 @@
 namespace App\Services\Blog;
 
 use App\Repositories\Blog\BaseRepository as Repository;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BaseService
 {
@@ -20,7 +21,13 @@ class BaseService
 
     public function read_one(int $id): array
     {
-        return $this->repository->read_one($id)->toArray();
+        $response = $this->repository->read_one($id);
+
+        if (is_null($response)) {
+            throw new NotFoundHttpException;
+        } else {
+            return $response->toArray();
+        }
     }
 
     public function store(array $data): array
