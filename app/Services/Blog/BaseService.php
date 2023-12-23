@@ -42,6 +42,7 @@ class BaseService
         foreach ($components as $component) {
             $image   = data_get($component, "image");
             $article = data_get($component, "article");
+            $images  = data_get($component, "images");
 
             if (empty($image) && empty($article)) {
                 throw new \Exception("component 需要有內容", 400);
@@ -85,6 +86,18 @@ class BaseService
                 $article_result = $this->repository->store_article([
                     "component_id" => $component_result->id,
                     "content"      => $article,
+                ]);
+            }
+
+            // images
+            foreach ($images as $img) {
+                $this->repository->store_image([
+                    "component_id"  => $component_result->id,
+                    "image_id"      => data_get($img, "image_id"),
+                    "name"          => data_get($img, "name"),
+                    "url"           => data_get($img, "url"),
+                    "original_name" => data_get($img, "original_name"),
+                    "status"        => "0",
                 ]);
             }
         }

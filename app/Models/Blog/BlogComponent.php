@@ -23,6 +23,14 @@ class BlogComponent extends Model
 
     /**
      */
+    public function images()
+    {
+        return $this->hasMany(BlogComponentImage::class, 'component_id', 'id');
+    }
+
+
+    /**
+     */
     public function article()
     {
         return $this->hasOne(BlogComponentArticle::class, 'component_id', 'id');

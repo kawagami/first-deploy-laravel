@@ -30,6 +30,7 @@ class BaseRepository
     {
         return $this->model->with([
             "components.image",
+            "components.images",
             "components.article",
         ])->find($id);
     }

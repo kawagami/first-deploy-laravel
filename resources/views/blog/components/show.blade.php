@@ -18,9 +18,16 @@
                     @break
 
                     @case('2')
-                        <div class="col-12" style="text-align: center;">
-                            <img class="w-100" loading="lazy" src="{{ data_get($component, 'image.url') }}" alt="">
-                        </div>
+                        @php
+                            $images = data_get($component, 'images');
+                        @endphp
+                        @for ($i = 0; $i < count($images); $i++)
+                            @if ($i != 0)
+                                <div class="col-12" style="text-align: center;">
+                                    <img class="w-100" loading="lazy" src="{{ data_get($images, "{$i}.url") }}" alt="">
+                                </div>
+                            @endif
+                        @endfor
                     @break
 
                     @default
