@@ -12,7 +12,7 @@
             <div class="row mt-3">
                 @switch(data_get($component, 'type'))
                     @case('1')
-                        <div class="col-12" style="text-align: center;">
+                        <div class="col-12 card" style="text-align: center;">
                             {{ data_get($component, 'article.content') }}
                         </div>
                     @break
@@ -24,7 +24,7 @@
                         @for ($i = 0; $i < count($images); $i++)
                             @if ($i != 0)
                                 <div class="col-12" style="text-align: center;">
-                                    <img class="w-100" loading="lazy" src="{{ data_get($images, "{$i}.url") }}" alt="">
+                                    <img class="w-100 card" loading="lazy" src="{{ data_get($images, "{$i}.url") }}" alt="">
                                 </div>
                             @endif
                         @endfor
@@ -36,7 +36,7 @@
 
                         </div>
                         <div class="col-6">
-                            <img class="w-100" loading="lazy" src="{{ data_get($component, 'image.url') }}" alt="">
+                            <img class="w-100 card" loading="lazy" src="{{ data_get($component, 'image.url') }}" alt="">
                         </div>
                 @endswitch
             </div>
