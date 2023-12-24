@@ -14,6 +14,9 @@
 </head>
 
 <body>
+    @for ($i = 0; $i < 5; $i++)
+        <div class="background-animation"></div>
+    @endfor
     @include('components.navbar')
 
     @yield('main')

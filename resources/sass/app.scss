@@ -8,9 +8,7 @@
 @import 'bootstrap/scss/bootstrap';
 
 body {
-    background-image: url("../images/bgc2_webp.webp");
-    background-size: cover;
-    background-repeat: repeat;
+    background-color: #edffef;
 
 
     .container,
@@ -31,4 +29,69 @@ nav {
             #fff 85%,
             #ffd194 90%,
             #ffd194 100%);
+}
+
+
+.background-animation {
+    position: fixed;
+    top: -100px;
+    /* 讓元素從畫面外開始 */
+    width: 200px;
+    /* 調整元素大小 */
+    height: 200px;
+    background-color: transparent;
+    border-radius: 10%;
+    /* 圓形 */
+    box-shadow: 0 0 50px rgba(0, 255, 0, 0.7);
+    /* 綠色陰影效果 */
+    animation: fallRotate 5s linear infinite;
+    /* 動畫設定 */
+}
+
+/* 定義動畫效果 */
+@keyframes fallRotate {
+    0% {
+        transform: translateY(-200px) rotate(0deg);
+        /* 初始位置和角度 */
+        opacity: 0;
+        /* 初始透明度 */
+    }
+
+    100% {
+        transform: translateY(110vh) rotate(360deg);
+        /* 結束位置和角度 */
+        opacity: 1;
+        /* 結束透明度 */
+    }
+}
+
+/* 為每個元素指定不同的初始位置和動畫延遲 */
+.background-animation:nth-child(1) {
+    top: -70px;
+    left: 10%;
+    animation-duration: 4s;
+}
+
+.background-animation:nth-child(2) {
+    top: -50px;
+    left: 20%;
+    animation-duration: 5s;
+}
+
+.background-animation:nth-child(3) {
+    top: -100px;
+    left: 40%;
+    animation-duration: 7s;
+}
+
+.background-animation:nth-child(4) {
+    top: -80px;
+    left: 60%;
+    animation-duration: 6s;
+}
+
+.background-animation:nth-child(5) {
+    top: -86px;
+    left: 80%;
+    animation-duration: 8s;
 }
