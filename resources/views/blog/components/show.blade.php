@@ -41,13 +41,21 @@
                     @break
 
                     @default
-                        <div class="col-6" style="text-align: right;">
-                            {{ data_get($component, 'article.content') }}
-
-                        </div>
-                        <div class="col-6">
-                            <img class="w-100 card" loading="lazy" src="{{ data_get($component, 'image.url') }}" alt="">
-                        </div>
+                        @if ($index % 2 == 0)
+                            <div class="col-6" style="text-align: right;">
+                                {{ data_get($component, 'article.content') }}
+                            </div>
+                            <div class="col-6">
+                                <img class="w-100 card" loading="lazy" src="{{ data_get($component, 'image.url') }}" alt="">
+                            </div>
+                        @else
+                            <div class="col-6">
+                                <img class="w-100 card" loading="lazy" src="{{ data_get($component, 'image.url') }}" alt="">
+                            </div>
+                            <div class="col-6" style="text-align: right;">
+                                {{ data_get($component, 'article.content') }}
+                            </div>
+                        @endif
                 @endswitch
             </div>
         @endforeach
