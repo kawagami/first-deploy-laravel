@@ -21,13 +21,23 @@
                         @php
                             $images = data_get($component, 'images');
                         @endphp
-                        @for ($i = 0; $i < count($images); $i++)
-                            @if ($i != 0)
+                        @if (count($images) > 1)
+                            @for ($i = 0; $i < count($images); $i++)
+                                @if ($i != 0)
+                                    <div class="col-12" style="text-align: center;">
+                                        <img class="w-100 card" loading="lazy" src="{{ data_get($images, "{$i}.url") }}"
+                                            alt="">
+                                    </div>
+                                @endif
+                            @endfor
+                        @else
+                            @for ($i = 0; $i < count($images); $i++)
                                 <div class="col-12" style="text-align: center;">
-                                    <img class="w-100 card" loading="lazy" src="{{ data_get($images, "{$i}.url") }}" alt="">
+                                    <img class="w-100 card" loading="lazy" src="{{ data_get($images, "{$i}.url") }}"
+                                        alt="">
                                 </div>
-                            @endif
-                        @endfor
+                            @endfor
+                        @endif
                     @break
 
                     @default
