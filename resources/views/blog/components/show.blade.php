@@ -52,7 +52,7 @@
                             <div class="col-6">
                                 <img class="w-100 card" loading="lazy" src="{{ data_get($component, 'image.url') }}" alt="">
                             </div>
-                            <div class="col-6" style="text-align: right;">
+                            <div class="col-6" style="text-align: left;">
                                 {{ data_get($component, 'article.content') }}
                             </div>
                         @endif
