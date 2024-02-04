@@ -1,0 +1,22 @@
+name: Regularly update the hackmd note list
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: update the hackmd note list
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.VULTR_HOST }}
+        username: ${{ secrets.VULTR_USERNAME }}
+        key: ${{ secrets.VULTR_SSH_KEY }}
+        script: |
+          sh app.sh php artisan hackmd:get-note
