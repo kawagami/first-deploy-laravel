@@ -2,7 +2,7 @@ name: Regularly update the hackmd note list
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '0 21 * * *'  # 在 UTC+8 時區的每天凌晨五點執行
 
 jobs:
   deploy:
