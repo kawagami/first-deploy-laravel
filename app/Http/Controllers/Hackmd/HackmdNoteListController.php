@@ -22,7 +22,7 @@ class HackmdNoteListController extends Controller
         // 建立基本 query
         $query = HackmdNoteList::with('tags')
             ->where('readPermission', 'guest')
-            ->orderByDesc('createdAt');
+            ->orderByDesc('lastChangedAt');
 
         // 過濾有"工作" tag 的筆記
         $query->whereDoesntHave('tags', function ($q) {
