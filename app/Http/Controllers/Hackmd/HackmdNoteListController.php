@@ -108,7 +108,7 @@ class HackmdNoteListController extends Controller
                     $new_note->tags()->attach($tag_ids);
 
                     $count_create++;
-                } elseif ($old_list->lastChangedAt < data_get($list, 'lastChangedAt')) {
+                } elseif (Carbon::parse($old_list->lastChangedAt)->getTimestampMs() < intval(data_get($list, 'lastChangedAt'))) {
                     // 更新資料
                     $old_list->update($data);
 
