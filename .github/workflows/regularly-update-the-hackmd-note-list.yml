@@ -19,4 +19,4 @@ jobs:
         username: ${{ secrets.VULTR_USERNAME }}
         key: ${{ secrets.VULTR_SSH_KEY }}
         script: |
-          sh app.sh php artisan hackmd:get-note
+          sh app.sh php artisan hackmd:get-note-lists
