@@ -108,7 +108,9 @@ class HackmdNoteListController extends Controller
                     $new_note->tags()->attach($tag_ids);
 
                     $count_create++;
-                } elseif (Carbon::parse($old_list->lastChangedAt)->getTimestampMs() < intval(data_get($list, 'lastChangedAt'))) {
+                } elseif (Carbon::parse($old_list->lastChangedAt)->addHours(8)->getTimestamp() < intval(data_get($list, 'lastChangedAt') / 1000)) {
+                    // 對條件做應急處理，理論上不在 model 中使用 cast 的話可以更漂亮，但要考量修改後會影響到甚麼地方
+
                     // 更新資料
                     $old_list->update($data);
 
