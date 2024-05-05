@@ -16,6 +16,9 @@
                     <a class="nav-link" href="{{ route('note') }}">@lang('navbar.my-note')</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="https://next-blog.kawa.homes/hackmd-notes">@lang('navbar.my-note-nextjs')</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{{ route('short-url') }}">@lang('navbar.short-url')</a>
                 </li>
                 {{-- <li class="nav-item">
