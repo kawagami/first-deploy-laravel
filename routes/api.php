@@ -67,4 +67,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/blog', [BlogController::class, 'store']);
 
 });
-Route::post('/test', [AuthController::class, 'test']);
+
+// firebase 功能正常，關閉不安全的 API
+// Route::post('/test', [AuthController::class, 'test']);
