@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 
 class AuthController extends Controller
 {
@@ -53,11 +54,24 @@ class AuthController extends Controller
      */
     public function test(Request $request)
     {
-        // info(
-        //     $request->input()
-        // );
+        // 验证文件上传
+        $request->validate([
+            'file' => 'required|file|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
-        return response($request->input());
+        // 获取上传的文件
+        $file = $request->file('file');
+
+        // 将文件内容读取为字符串
+        $fileContent = file_get_contents($file->getPathname());
+
+        $response = Http::attach(
+            'file',
+            $fileContent,
+            $file->getClientOriginalName()
+        )->post('http://firebase:5000/upload', []);
+
+        return response($response);
     }
 
     /**
