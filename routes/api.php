@@ -5,7 +5,6 @@ use App\Http\Controllers\Apis\AdminController;
 use App\Http\Controllers\Apis\AuthController;
 use App\Http\Controllers\Apis\UploadImageController;
 use App\Http\Controllers\Apis\ImageController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Apis\LineBotController;
 use App\Http\Controllers\Blog\BlogController;
@@ -65,8 +64,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // blog
     Route::get('/blog', [BlogController::class, 'read']);
     Route::post('/blog', [BlogController::class, 'store']);
-
 });
 
-// firebase 功能正常，關閉不安全的 API
-// Route::post('/test', [AuthController::class, 'test']);
+// firebase image 有修改，再測試一次
+Route::post('/test', [AuthController::class, 'test']);
