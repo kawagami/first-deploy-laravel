@@ -66,5 +66,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/blog', [BlogController::class, 'store']);
 });
 
-// firebase image 有修改，再測試一次
-Route::post('/test', [AuthController::class, 'test']);
+// 測試通過，關閉不安全的 API
+// Route::post('/test', [AuthController::class, 'test']);
