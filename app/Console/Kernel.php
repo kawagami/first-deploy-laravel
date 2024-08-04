@@ -15,9 +15,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
-        // $schedule->command("hackmd:get-note-lists")->hourly();
-        $schedule->command("hackmd:get-note-lists")->daily();
+        // $schedule->command("hackmd:get-note-lists")->daily();
+        $schedule->command("hackmd:get-note-lists")->everyMinute();
         // $schedule->call(function () {
         //     info(now()->toDateTimeString());
         // })->everyMinute();
