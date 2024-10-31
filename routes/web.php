@@ -24,7 +24,7 @@ use App\Http\Controllers\ThumborController;
 */
 
 Route::get('/', function () {
-    return redirect()->route('blog.index');
+    return redirect()->away('https://next-blog.kawa.homes');
 })->name('index');
 
 Route::get('/.well-known/acme-challenge/{token}', function ($token) {
